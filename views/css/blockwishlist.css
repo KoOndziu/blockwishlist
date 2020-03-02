@@ -1,0 +1,21 @@
+/* Products add to wishlist */
+#wishlist_button{ cursor: pointer; }
+
+.wishlist-list-add{margin:0px; padding:0px 10px 0px 0px; }
+.wishlist-list-add li{ cursor: pointer; padding: 4px 0px; margin-left: -4px;}
+.wishlist-list-add li:hover{ color:#0bb8fd; }
+.wishlist-list-add li i{ vertical-align: middle; margin-top:-3px; }
+
+#module-blockwishlist-mywishlist #content {
+	box-shadow: 2px 2px 8px 0 rgba(0,0,0,.2);
+	background: #fff;
+	padding: 1rem;
+	font-size: .875rem;
+	color: #7a7a7a;
+}
+.block_wishlist form .input-wrapper {
+  overflow: hidden;
+}
+.block_wishlist form button {
+	box-shadow: none;
+}
