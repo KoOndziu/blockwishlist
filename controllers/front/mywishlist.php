@@ -22,7 +22,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
         if (!Tools::isSubmit('myajax')) {
             $this->assign();
         } elseif (!empty($action) && method_exists($this,
-        'ajaxProcess'.Tools::toCamelCase($action))) {
+                'ajaxProcess'.Tools::toCamelCase($action))) {
             $this->{'ajaxProcess'.Tools::toCamelCase($action)}();
         } else {
             die(Tools::jsonEncode(array('error' => 'method doesn\'t exist')));
@@ -46,18 +46,18 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
             $id_wishlist = Tools::getValue('id_wishlist');
             if (Tools::isSubmit('submitWishlist')) {
                 if (Configuration::get('PS_TOKEN_ACTIVATED') == 1 && strcmp(Tools::getToken(),
-                Tools::getValue('token'))) {
+                        Tools::getValue('token'))) {
                     $errors[] = $this->module->l('Invalid token', 'mywishlist');
                 }
                 if (!count($errors)) {
                     $name = Tools::getValue('name');
                     if (empty($name)) {
                         $errors[] = $this->module->l('You must specify a name.',
-                        'mywishlist');
+                            'mywishlist');
                     }
                     if (WishList::isExistsByNameForUser($name)) {
                         $errors[] = $this->module->l('This name is already used by another list.',
-                        'mywishlist');
+                            'mywishlist');
                     }
 
                     if (!count($errors)) {
@@ -67,58 +67,59 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
                         $wishlist->name          = $name;
                         $wishlist->id_customer   = (int) $this->context->customer->id;
                         !$wishlist->isDefault($wishlist->id_customer) ? $wishlist->default
-                        = 1 : '';
+                                = 1 : '';
                         list($us, $s) = explode(' ', microtime());
                         srand($s * $us);
                         $wishlist->token         = Tools::strtoupper(Tools::substr(sha1(uniqid(rand(),
-                        true)._COOKIE_KEY_.$this->context->customer->id), 0, 16));
+                                            true)._COOKIE_KEY_.$this->context->customer->id),
+                                    0, 16));
                         $wishlist->add();
                         Mail::Send(
-                        $this->context->language->id, 'wishlink',
-                        Mail::l('Your wishlist\'s link',
-                        $this->context->language->id),
-                        array(
-                        '{wishlist}' => $wishlist->name,
-                        '{message}' => $this->context->link->getModuleLink('blockwishlist',
-                        'view', array('token' => $wishlist->token))
-                        ), $this->context->customer->email,
-                        $this->context->customer->firstname.' '.$this->context->customer->lastname,
-                        null, (string) Configuration::get('PS_SHOP_NAME'), null,
-                        null, $this->module->getLocalPath().'mails/');
+                            $this->context->language->id, 'wishlink',
+                            Mail::l('Your wishlist\'s link',
+                                $this->context->language->id),
+                            array(
+                            '{wishlist}' => $wishlist->name,
+                            '{message}' => $this->context->link->getModuleLink('blockwishlist',
+                                'view', array('token' => $wishlist->token))
+                            ), $this->context->customer->email,
+                            $this->context->customer->firstname.' '.$this->context->customer->lastname,
+                            null, (string) Configuration::get('PS_SHOP_NAME'),
+                            null, null, $this->module->getLocalPath().'mails/');
 
                         Tools::redirect($this->context->link->getModuleLink('blockwishlist',
-                        'mywishlist'));
+                                'mywishlist'));
                     }
                 }
             } else if ($add) {
                 WishList::addCardToWishlist($this->context->customer->id,
-                Tools::getValue('id_wishlist'), $this->context->language->id);
+                    Tools::getValue('id_wishlist'), $this->context->language->id);
             } elseif ($delete && empty($id_wishlist) === false) {
                 $wishlist = new WishList((int) $id_wishlist);
                 if ($this->context->customer->isLogged() && $this->context->customer->id
-                == $wishlist->id_customer && Validate::isLoadedObject($wishlist)) {
+                    == $wishlist->id_customer && Validate::isLoadedObject($wishlist)) {
                     $wishlist->delete();
                 } else {
                     $errors[] = $this->module->l('Cannot delete this wishlist',
-                    'mywishlist');
+                        'mywishlist');
                 }
             } elseif ($default) {
                 $wishlist = new WishList((int) $id_wishlist);
                 if ($this->context->customer->isLogged() && $this->context->customer->id
-                == $wishlist->id_customer && Validate::isLoadedObject($wishlist)) {
+                    == $wishlist->id_customer && Validate::isLoadedObject($wishlist)) {
                     $wishlist->setDefault();
                 } else {
                     $errors[] = $this->module->l('Cannot delete this wishlist',
-                    'mywishlist');
+                        'mywishlist');
                 }
             }
             $this->context->smarty->assign('wishlists',
-            WishList::getByIdCustomer($this->context->customer->id));
+                WishList::getByIdCustomer($this->context->customer->id));
             $this->context->smarty->assign('nbProducts',
-            WishList::getInfosByIdCustomer($this->context->customer->id));
+                WishList::getInfosByIdCustomer($this->context->customer->id));
         } else {
             Tools::redirect('index.php?controller=authentication&back='.urlencode($this->context->link->getModuleLink('blockwishlist',
-            'mywishlist')));
+                        'mywishlist')));
         }
 
         $this->context->smarty->assign(array(
@@ -134,7 +135,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(Tools::jsonEncode(array('success' => false,
-            'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+                'error' => $this->module->l('You aren\'t logged in',
+                    'mywishlist'))));
         }
 
         $default     = Tools::getIsset('default');
@@ -148,8 +150,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
             $wishlist->delete();
         } else {
             die(Tools::jsonEncode(array('success' => false,
-            'error' => $this->module->l('Cannot delete this wishlist',
-            'mywishlist'))));
+                'error' => $this->module->l('Cannot delete this wishlist',
+                    'mywishlist'))));
         }
 
         if ($default_change) {
@@ -157,8 +159,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
             if (count($array)) {
                 die(Tools::jsonEncode(array(
-                'success' => true,
-                'id_default' => $array[0]['id_wishlist']
+                    'success' => true,
+                    'id_default' => $array[0]['id_wishlist']
                 )));
             }
         }
@@ -170,7 +172,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(Tools::jsonEncode(array('success' => false,
-            'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+                'error' => $this->module->l('You aren\'t logged in',
+                    'mywishlist'))));
         }
 
         $default     = Tools::getIsset('default');
@@ -180,7 +183,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
         if ($default) {
             $wishlist = new WishList((int) $id_wishlist);
             if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id
-            && $wishlist->setDefault()) {
+                && $wishlist->setDefault()) {
                 die(Tools::jsonEncode(array('success' => true)));
             }
         }
@@ -192,7 +195,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(Tools::jsonEncode(array('success' => false,
-            'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+                'error' => $this->module->l('You aren\'t logged in',
+                    'mywishlist'))));
         }
 
         $id_product           = (int) Tools::getValue('id_product');
@@ -206,13 +210,14 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
         //check the data is ok
         if (!$id_product || !is_int($id_product_attribute) || !$quantity ||
-        !is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist
-        || !$id_new_wishlist ||
-        (Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer != $this->context->customer->id)
-        ||
-        (Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer != $this->context->customer->id)) {
+            !is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist
+            || !$id_new_wishlist ||
+            (Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer
+            != $this->context->customer->id) ||
+            (Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer
+            != $this->context->customer->id)) {
             die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while moving product to another list',
-            'mywishlist'))));
+                    'mywishlist'))));
         }
 
         $res   = true;
@@ -221,22 +226,22 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
         if ($check) {
             $res &= $old_wishlist->removeProduct($id_old_wishlist,
-            $this->context->customer->id, $id_product, $id_product_attribute);
+                $this->context->customer->id, $id_product, $id_product_attribute);
             $res &= $new_wishlist->updateProduct($id_new_wishlist, $id_product,
-            $id_product_attribute, $priority, $quantity + $check);
+                $id_product_attribute, $priority, $quantity + $check);
         } else {
             $res &= $old_wishlist->removeProduct($id_old_wishlist,
-            $this->context->customer->id, $id_product, $id_product_attribute);
+                $this->context->customer->id, $id_product, $id_product_attribute);
             $res &= $new_wishlist->addProduct($id_new_wishlist,
-            $this->context->customer->id, $id_product, $id_product_attribute,
-            $quantity);
+                $this->context->customer->id, $id_product,
+                $id_product_attribute, $quantity);
         }
 
         if (!$res) {
             die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while moving product to another list',
-            'mywishlist'))));
+                    'mywishlist'))));
         }
         die(Tools::jsonEncode(array('success' => true, 'msg' => $this->module->l('The product has been correctly moved',
-        'mywishlist'))));
+                'mywishlist'))));
     }
 }

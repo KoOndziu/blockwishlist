@@ -18,8 +18,8 @@ $id_product_attribute = (int) Tools::getValue('id_product_attribute');
 $module = new BlockWishList();
 
 if (Configuration::get('PS_TOKEN_ENABLE') == 1 &&
- strcmp(Tools::getToken(false), Tools::getValue('token')) &&
- $context->customer->isLogged() === true
+    strcmp(Tools::getToken(false), Tools::getValue('token')) &&
+    $context->customer->isLogged() === true
 ) {
     echo $module->l('Invalid token', 'cart');
 }
@@ -29,17 +29,17 @@ if ($context->customer->isLogged()) {
     }
 
     if ((int) $context->cookie->id_wishlist > 0 && !WishList::exists($context->cookie->id_wishlist,
-    $context->customer->id)) {
+            $context->customer->id)) {
         $context->cookie->id_wishlist = '';
     }
 
     if (empty($context->cookie->id_wishlist) === true || $context->cookie->id_wishlist
-    == false) {
+        == false) {
         $context->smarty->assign('error', true);
     }
     if (($add || $delete) && empty($id_product) === false) {
         if (!isset($context->cookie->id_wishlist) || $context->cookie->id_wishlist
-        == '') {
+            == '') {
             $wishlist                = new WishList();
             $wishlist->id_shop       = $context->shop->id;
             $wishlist->id_shop_group = $context->shop->id_shop_group;
@@ -51,22 +51,23 @@ if ($context->customer->isLogged()) {
             list($us, $s) = explode(' ', microtime());
             srand($s * $us);
             $wishlist->token              = Tools::strtoupper(Tools::substr(sha1(uniqid(rand(),
-            true)._COOKIE_KEY_.$context->customer->id), 0, 16));
+                                true)._COOKIE_KEY_.$context->customer->id), 0,
+                        16));
             $wishlist->add();
             $context->cookie->id_wishlist = (int) $wishlist->id;
         }
         if ($add && $quantity) {
             WishList::addProduct($context->cookie->id_wishlist,
-            $context->customer->id, $id_product, $id_product_attribute,
-            $quantity);
+                $context->customer->id, $id_product, $id_product_attribute,
+                $quantity);
         } elseif ($delete) {
             WishList::removeProduct($context->cookie->id_wishlist,
-            $context->customer->id, $id_product, $id_product_attribute);
+                $context->customer->id, $id_product, $id_product_attribute);
         }
     }
     $context->smarty->assign('products',
-    WishList::getProductByIdCustomer($context->cookie->id_wishlist,
-    $context->customer->id, $context->language->id, null, true));
+        WishList::getProductByIdCustomer($context->cookie->id_wishlist,
+            $context->customer->id, $context->language->id, null, true));
 
     if (Tools::file_exists_cache(_PS_THEME_DIR_.'modules/blockwishlist/views/templates/front/blockwishlist-ajax.tpl')) {
         $context->smarty->display(_PS_THEME_DIR_.'modules/blockwishlist/views/templates/front/blockwishlist-ajax.tpl');
