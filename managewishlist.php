@@ -46,8 +46,9 @@ if ($context->customer->isLogged()) {
         if (!strcmp($action, 'update')) {
             WishList::updateProduct($id_wishlist, $id_product, $id_product_attribute, $priority, $quantity);
         } else {
-            if (!strcmp($action, 'delete'))
+            if (!strcmp($action, 'delete')) {
                 WishList::removeProduct($id_wishlist, (int) $context->customer->id, $id_product, $id_product_attribute);
+            }
 
             $products = WishList::getProductByIdCustomer($id_wishlist, $context->customer->id, $context->language->id);
             $bought = WishList::getBoughtProduct($id_wishlist);
@@ -56,9 +57,9 @@ if ($context->customer->isLogged()) {
             for ($i = 0; $i < sizeof($products); ++$i)
             {
                 $obj = new Product((int) ($products[$i]['id_product']), false, $context->language->id);
-                if (!Validate::isLoadedObject($obj))
+                if (!Validate::isLoadedObject($obj)) {
                     continue;
-                else {
+                } else {
                     if ($products[$i]['id_product_attribute'] != 0) {
                         $combination_imgs = $obj->getCombinationImages($context->language->id);
                         if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
@@ -73,30 +74,37 @@ if ($context->customer->isLogged()) {
                     } else {
                         $images = $obj->getImages($context->language->id);
                         foreach ($images AS $k => $image)
+                        {
                             if ($image['cover']) {
                                 $coverImg = $obj->id . '-' . $image['id_image'];
                                 $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
 
                                 break;
                             }
+                        }
                     }
-                    if (!isset($products[$i]['image_link']))
+                    if (!isset($products[$i]['image_link'])) {
                         $products[$i]['image_link'] = 'img/p/' . $context->language->iso_code . ImageType::getFormattedName('home');
+                    }
                 }
                 $products[$i]['bought'] = false;
                 for ($j = 0, $k = 0; $j < sizeof($bought); ++$j)
                 {
                     if ($bought[$j]['id_product'] == $products[$i]['id_product'] AND
-                            $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute'])
+                            $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']) {
                         $products[$i]['bought'][$k++] = $bought[$j];
+                    }
                 }
             }
 
             $productBoughts = array();
 
             foreach ($products as $product)
-                if ($product['bought'])
+            {
+                if ($product['bought']) {
                     $productBoughts[] = $product;
+                }
+            }
             $context->smarty->assign(array(
                 'products' => $products,
                 'productsBoughts' => $productBoughts,
@@ -109,14 +117,15 @@ if ($context->customer->isLogged()) {
             // Instance of module class for translations
             $module = new BlockWishList();
 
-            if (Tools::file_exists_cache(_PS_THEME_DIR_ . 'modules/blockwishlist/views/templates/front/managewishlist.tpl'))
+            if (Tools::file_exists_cache(_PS_THEME_DIR_ . 'modules/blockwishlist/views/templates/front/managewishlist.tpl')) {
                 $context->smarty->display(_PS_THEME_DIR_ . 'modules/blockwishlist/views/templates/front/managewishlist.tpl');
-            elseif (Tools::file_exists_cache(dirname(__FILE__) . '/views/templates/front/managewishlist.tpl'))
+            } elseif (Tools::file_exists_cache(dirname(__FILE__) . '/views/templates/front/managewishlist.tpl')) {
                 $context->smarty->display(dirname(__FILE__) . '/views/templates/front/managewishlist.tpl');
-            elseif (Tools::file_exists_cache(dirname(__FILE__) . '/managewishlist.tpl'))
+            } elseif (Tools::file_exists_cache(dirname(__FILE__) . '/managewishlist.tpl')) {
                 $context->smarty->display(dirname(__FILE__) . '/managewishlist.tpl');
-            else
+            } else {
                 echo $module->l('No template found', 'managewishlist');
+            }
         }
     }
 }

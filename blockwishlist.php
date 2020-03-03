@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('_PS_VERSION_'))
+if (!defined('_PS_VERSION_')) {
     exit;
+}
 
 include_once(dirname(__FILE__) . '/WishList.php');
 
@@ -35,16 +36,21 @@ class BlockWishList extends Module
     public function install($delete_params = true)
     {
         if ($delete_params) {
-            if (!file_exists(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE))
+            if (!file_exists(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE)) {
                 return (false);
-            else if (!$sql = Tools::file_get_contents(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE))
+            } else if (!$sql = Tools::file_get_contents(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE)) {
                 return (false);
+            }
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
             $sql = preg_split("/;\s*[\r\n]+/", $sql);
             foreach ($sql as $query)
-                if ($query)
-                    if (!Db::getInstance()->execute(trim($query)))
+            {
+                if ($query) {
+                    if (!Db::getInstance()->execute(trim($query))) {
                         return false;
+                    }
+                }
+            }
         }
 
         if (!parent::install() ||
@@ -55,8 +61,9 @@ class BlockWishList extends Module
                 !$this->registerHook('header') ||
                 !$this->registerHook('adminCustomers') ||
                 !$this->registerHook('displayProductListFunctionalButtons') ||
-                !$this->registerHook('top'))
+                !$this->registerHook('top')) {
             return false;
+        }
         /* This hook is optional */
         $this->registerHook('displayMyAccountBlock');
 
@@ -65,8 +72,9 @@ class BlockWishList extends Module
 
     public function uninstall($delete_params = true)
     {
-        if (($delete_params && !$this->deleteTables()) || !parent::uninstall())
+        if (($delete_params && !$this->deleteTables()) || !parent::uninstall()) {
             return false;
+        }
 
         return true;
     }
@@ -84,10 +92,12 @@ class BlockWishList extends Module
 
     public function reset()
     {
-        if (!$this->uninstall(false))
+        if (!$this->uninstall(false)) {
             return false;
-        if (!$this->install(false))
+        }
+        if (!$this->install(false)) {
             return false;
+        }
 
         return true;
     }
@@ -96,19 +106,21 @@ class BlockWishList extends Module
     {
         //$this->context->link->getProductLink($val['id_product']);
 
-        if (Tools::isSubmit('viewblockwishlist') && $id = Tools::getValue('id_product'))
+        if (Tools::isSubmit('viewblockwishlist') && $id = Tools::getValue('id_product')) {
             Tools::redirect($this->context->link->getProductLink($id));
-        elseif (Tools::isSubmit('submitSettings')) {
+        } elseif (Tools::isSubmit('submitSettings')) {
             $activated = Tools::getValue('activated');
-            if ($activated != 0 && $activated != 1)
+            if ($activated != 0 && $activated != 1) {
                 $this->html .= '<div class="alert error alert-danger">' . $this->l('Activate module : Invalid choice.') . '</div>';
+            }
             $this->html .= '<div class="conf confirm alert alert-success">' . $this->l('Settings updated') . '</div>';
         }
 
         $this->html .= $this->renderJS();
         $this->html .= $this->renderForm();
-        if (Tools::getValue('id_customer') && Tools::getValue('id_wishlist'))
+        if (Tools::getValue('id_customer') && Tools::getValue('id_wishlist')) {
             $this->html .= $this->renderList((int) Tools::getValue('id_wishlist'));
+        }
 
         return $this->html;
     }
@@ -116,8 +128,9 @@ class BlockWishList extends Module
     public function hookDisplayProductListFunctionalButtons($params)
     {
         //TODO : Add cache
-        if ($this->context->customer->isLogged())
+        if ($this->context->customer->isLogged()) {
             $this->smarty->assign('wishlists', Wishlist::getByIdCustomer($this->context->customer->id));
+        }
         $this->smarty->assign('product', $params['product']);
         return $this->display(__FILE__, 'views/templates/front/blockwishlist_button.tpl');
     }
@@ -128,14 +141,15 @@ class BlockWishList extends Module
             $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
             if (empty($this->context->cookie->id_wishlist) === true ||
                     WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
-                if (!count($wishlists))
+                if (!count($wishlists)) {
                     $id_wishlist = false;
-                else {
+                } else {
                     $id_wishlist = (int) $wishlists[0]['id_wishlist'];
                     $this->context->cookie->id_wishlist = (int) $id_wishlist;
                 }
-            } else
+            } else {
                 $id_wishlist = $this->context->cookie->id_wishlist;
+            }
 
             $this->smarty->assign(
                     array(
@@ -147,8 +161,9 @@ class BlockWishList extends Module
                         'ptoken' => Tools::getToken(false)
                     )
             );
-        } else
+        } else {
             $this->smarty->assign(array('wishlist_products' => false, 'wishlists' => false));
+        }
 
 
         // Media::addJsDef(array('pepito' => 'xxxx'));
@@ -173,14 +188,15 @@ class BlockWishList extends Module
             $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
             if (empty($this->context->cookie->id_wishlist) === true ||
                     WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
-                if (!count($wishlists))
+                if (!count($wishlists)) {
                     $id_wishlist = false;
-                else {
+                } else {
                     $id_wishlist = (int) $wishlists[0]['id_wishlist'];
                     $this->context->cookie->id_wishlist = (int) $id_wishlist;
                 }
-            } else
+            } else {
                 $id_wishlist = $this->context->cookie->id_wishlist;
+            }
             $this->smarty->assign(
                     array(
                         'id_wishlist' => $id_wishlist,
@@ -191,8 +207,9 @@ class BlockWishList extends Module
                         'ptoken' => Tools::getToken(false)
                     )
             );
-        } else
+        } else {
             $this->smarty->assign(array('wishlist_products' => false, 'wishlists' => false));
+        }
 
         return ($this->display(__FILE__, 'views/templates/front/blockwishlist.tpl'));
     }
@@ -234,9 +251,9 @@ class BlockWishList extends Module
         for ($i = 0; $i < $nb_products; ++$i)
         {
             $obj = new Product((int) $products[$i]['id_product'], false, $this->context->language->id);
-            if (!Validate::isLoadedObject($obj))
+            if (!Validate::isLoadedObject($obj)) {
                 continue;
-            else {
+            } else {
                 $images = $obj->getImages($this->context->language->id);
                 foreach ($images as $image)
                 {
@@ -245,8 +262,9 @@ class BlockWishList extends Module
                         break;
                     }
                 }
-                if (!isset($products[$i]['cover']))
+                if (!isset($products[$i]['cover'])) {
                     $products[$i]['cover'] = $this->context->language->iso_code . '-default';
+                }
             }
         }
         $this->html .= '
@@ -268,8 +286,9 @@ class BlockWishList extends Module
 						<img src="' . $this->context->link->getImageLink($product['link_rewrite'], $product['cover'],
                             ImageType::getFormatedName('small')) . '" alt="' . htmlentities($product['name'], ENT_COMPAT, 'UTF-8') . '" style="float:left;" />
 						' . $product['name'];
-            if (isset($product['attributes_small']))
+            if (isset($product['attributes_small'])) {
                 $this->html .= '<br /><i>' . htmlentities($product['attributes_small'], ENT_COMPAT, 'UTF-8') . '</i>';
+            }
             $this->html .= '
 					</td>
 					<td class="item" style="text-align:center;">' . (int) $product['quantity'] . '</td>
@@ -282,24 +301,26 @@ class BlockWishList extends Module
     public function hookAdminCustomers($params)
     {
         $customer = new Customer((int) $params['id_customer']);
-        if (!Validate::isLoadedObject($customer))
+        if (!Validate::isLoadedObject($customer)) {
             die(Tools::displayError());
+        }
 
         $this->html = '<h2>' . $this->l('Wishlists') . '</h2>';
 
         $wishlists = WishList::getByIdCustomer((int) $customer->id);
-        if (!count($wishlists))
+        if (!count($wishlists)) {
             $this->html .= $customer->lastname . ' ' . $customer->firstname . ' ' . $this->l('No wishlist.');
-        else {
+        } else {
             $this->html .= '<form action="' . Tools::safeOutput($_SERVER['REQUEST_URI']) . '" method="post" id="listing">';
 
             $id_wishlist = (int) Tools::getValue('id_wishlist');
-            if (!$id_wishlist)
+            if (!$id_wishlist) {
                 $id_wishlist = $wishlists[0]['id_wishlist'];
+            }
 
             $this->html .= '<span>' . $this->l('Wishlist') . ': </span> <select name="id_wishlist" onchange="$(\'#listing\').submit();">';
 
-            if (is_array($wishlists))
+            if (is_array($wishlists)) {
                 foreach ($wishlists as $wishlist)
                 {
                     $this->html .= '<option value="' . (int) $wishlist['id_wishlist'] . '"';
@@ -308,6 +329,7 @@ class BlockWishList extends Module
                     }
                     $this->html .= '>' . htmlentities($wishlist['name'], ENT_COMPAT, 'UTF-8') . '</option>';
                 }
+            }
             $this->html .= '</select>';
 
             $this->_displayProducts((int) $id_wishlist);

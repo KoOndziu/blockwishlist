@@ -30,9 +30,9 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
             for ($i = 0; $i < $nb_products; ++$i)
             {
                 $obj = new Product((int) $products[$i]['id_product'], true, $this->context->language->id);
-                if (!Validate::isLoadedObject($obj))
+                if (!Validate::isLoadedObject($obj)) {
                     continue;
-                else {
+                } else {
                     $products[$i]['priority_name'] = $priority_names[$products[$i]['priority']];
                     $quantity = Product::getQuantity((int) $products[$i]['id_product'], $products[$i]['id_product_attribute']);
                     $products[$i]['attribute_quantity'] = $quantity;
@@ -40,22 +40,25 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
                     $products[$i]['allow_oosp'] = $obj->isAvailableWhenOutOfStock((int) $obj->out_of_stock);
                     if ($products[$i]['id_product_attribute'] != 0) {
                         $combination_imgs = $obj->getCombinationImages($this->context->language->id);
-                        if (isset($combination_imgs[$products[$i]['id_product_attribute']][0]))
+                        if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
                             $products[$i]['cover'] = $obj->id . '-' . $combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
-                        else {
+                        } else {
                             $cover = Product::getCover($obj->id);
                             $products[$i]['cover'] = $obj->id . '-' . $cover['id_image'];
                         }
                     } else {
                         $images = $obj->getImages($this->context->language->id);
                         foreach ($images as $image)
+                        {
                             if ($image['cover']) {
                                 $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
                                 break;
                             }
+                        }
                     }
-                    if (!isset($products[$i]['cover']))
+                    if (!isset($products[$i]['cover'])) {
                         $products[$i]['cover'] = $this->context->language->iso_code . '-default';
+                    }
                 }
                 $products[$i]['bought'] = false;
                 /*
