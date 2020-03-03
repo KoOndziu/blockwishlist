@@ -1,6 +1,19 @@
 <?php
+/**
+ * 2015-2020 Ko_Ondziu
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+ * versions in the future. If you wish to customize PrestaShop for your
+ * needs please refer to http://www.prestashop.com for more information.
+ *
+ * @author    Ko_Ondziu <000konrad000@gmail.com>
+ * @copyright 2015-2020 Ko_Ondziu
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ */
 global $_MODULE;
-$_MODULE                                                                                     = array();
+$_MODULE = array();
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_button_641254d77e7a473aa5910574f3f9453c'] = 'Lista życzeń';
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_button_2d96bb66d8541a89620d3c158ceef42b'] = 'Dodaj do listy życzeń';
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_button_33010ef6524c87c41380e2cc5e212f73'] = 'Dodaj do %s';
