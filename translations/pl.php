@@ -12,6 +12,7 @@
  * @copyright 2015-2020 Ko_Ondziu
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
+
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_button_641254d77e7a473aa5910574f3f9453c'] = 'Lista życzeń';
