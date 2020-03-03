@@ -40,7 +40,7 @@ $id_product_attribute = (int)Tools::getValue('id_product_attribute');
 if (Configuration::get('PS_TOKEN_ENABLE') == 1 && strcmp(Tools::getToken(false), Tools::getValue('static_token')))
 	$error = $module->l('Invalid token', 'buywishlistproduct');
 
-if (!strlen($error) &&
+if (!Tools::strlen($error) &&
 	empty($token) === false &&
 	empty($id_product) === false)
 {

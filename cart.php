@@ -47,7 +47,7 @@ if ($context->customer->isLogged())
 			$wishlist->id_customer = (int)$context->customer->id;
 			list($us, $s) = explode(' ', microtime());
 			srand($s * $us);
-			$wishlist->token = strtoupper(substr(sha1(uniqid(rand(), true)._COOKIE_KEY_.$context->customer->id), 0, 16));
+			$wishlist->token = Tools::strtoupper(Tools::substr(sha1(uniqid(rand(), true)._COOKIE_KEY_.$context->customer->id), 0, 16));
 			$wishlist->add();
 			$context->cookie->id_wishlist = (int)$wishlist->id;
 		}

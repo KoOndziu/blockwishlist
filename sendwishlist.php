@@ -45,7 +45,7 @@ if ($context->customer->isLogged())
 	$id_wishlist = (int)Tools::getValue('id_wishlist');
 	if (empty($id_wishlist) === true)
 		exit($module->l('Invalid wishlist', 'sendwishlist'));
-	for ($i = 1; empty($_POST['email'.strval($i)]) === false; ++$i)
+	for ($i = 1; empty(Tools::getValue('email')) === false; ++$i)
 	{
 		$to = Tools::getValue('email'.$i);
 		$wishlist = WishList::exists($id_wishlist, $context->customer->id, true);
