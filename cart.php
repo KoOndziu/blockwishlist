@@ -56,7 +56,8 @@ if ($context->customer->isLogged()) {
             WishList::removeProduct($context->cookie->id_wishlist, $context->customer->id, $id_product, $id_product_attribute);
         }
     }
-    $context->smarty->assign('products',
+    $context->smarty->assign(
+        'products',
         WishList::getProductByIdCustomer($context->cookie->id_wishlist, $context->customer->id, $context->language->id, null, true));
 
     if (Tools::file_exists_cache(_PS_THEME_DIR_.'modules/blockwishlist/views/templates/front/blockwishlist-ajax.tpl')) {

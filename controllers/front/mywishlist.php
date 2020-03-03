@@ -68,7 +68,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
                         $wishlist->token = Tools::strtoupper(Tools::substr(sha1(uniqid(rand(), true)._COOKIE_KEY_.$this->context->customer->id), 0, 16));
                         $wishlist->add();
                         Mail::Send(
-                            $this->context->language->id, 'wishlink',
+                            $this->context->language->id,
+                            'wishlink',
                             Mail::l('Your wishlist\'s link', $this->context->language->id),
                             [
                                 '{wishlist}' => $wishlist->name,
@@ -227,8 +228,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
             FROM '._DB_PREFIX_.'wishlist_product
             WHERE `id_product` = '.$id_product.'
             AND `id_product_attribute` = '.$id_product_attribute.'
-            AND `id_wishlist` = '.$id_new_wishlist
-        );
+            AND `id_wishlist` = '.$id_new_wishlist);
 
         if ($check) {
             $res &= $old_wishlist->removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);

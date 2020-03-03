@@ -183,8 +183,7 @@ class BlockWishList extends Module
         if ($this->context->customer->isLogged()) {
             $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
             if (empty($this->context->cookie->id_wishlist) === true ||
-                WishList::exists($this->context->cookie->id_wishlist,
-                    $this->context->customer->id) === false) {
+                WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
                 if (!count($wishlists)) {
                     $id_wishlist = false;
                 } else {

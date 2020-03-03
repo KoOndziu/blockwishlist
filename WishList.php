@@ -302,9 +302,7 @@ class WishList extends ObjectModel
      *
      * @return array Results
      */
-    public static function getProductByIdCustomer($id_wishlist, $id_customer,
-        $id_lang, $id_product = null,
-        $quantity = false)
+    public static function getProductByIdCustomer($id_wishlist, $id_customer, $id_lang, $id_product = null, $quantity = false)
     {
         if (!Validate::isUnsignedId($id_customer) or
             !Validate::isUnsignedId($id_lang) or
@@ -329,7 +327,7 @@ class WishList extends ObjectModel
             return array();
         }
         for ($i = 0; $i < sizeof($products); ++$i) {
-            if (isset($products[$i]['id_product_attribute']) AND
+            if (isset($products[$i]['id_product_attribute']) and
                 Validate::isUnsignedInt($products[$i]['id_product_attribute'])) {
                 $result = Db::getInstance()->executeS('
                     SELECT al.`name` AS attribute_name, pa.`quantity` AS "attribute_quantity"
@@ -438,9 +436,7 @@ class WishList extends ObjectModel
      *
      * @return boolean succeed
      */
-    public static function updateProduct($id_wishlist, $id_product,
-        $id_product_attribute, $priority,
-        $quantity)
+    public static function updateProduct($id_wishlist, $id_product, $id_product_attribute, $priority, $quantity)
     {
         if (!Validate::isUnsignedId($id_wishlist) or
             !Validate::isUnsignedId($id_product) or
@@ -517,9 +513,7 @@ class WishList extends ObjectModel
      *
      * @return boolean succeed
      */
-    public static function addBoughtProduct($id_wishlist, $id_product,
-        $id_product_attribute, $id_cart,
-        $quantity)
+    public static function addBoughtProduct($id_wishlist, $id_product, $id_product_attribute, $id_cart, $quantity)
     {
         if (!Validate::isUnsignedId($id_wishlist) or
             !Validate::isUnsignedId($id_product) or
