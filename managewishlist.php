@@ -54,8 +54,7 @@ if ($context->customer->isLogged()) {
             $bought = WishList::getBoughtProduct($id_wishlist);
             $link = new Link();
 
-            for ($i = 0; $i < sizeof($products); ++$i)
-            {
+            for ($i = 0; $i < sizeof($products); ++$i) {
                 $obj = new Product((int) ($products[$i]['id_product']), false, $context->language->id);
                 if (!Validate::isLoadedObject($obj)) {
                     continue;
@@ -73,8 +72,7 @@ if ($context->customer->isLogged()) {
                         }
                     } else {
                         $images = $obj->getImages($context->language->id);
-                        foreach ($images as $k => $image)
-                        {
+                        foreach ($images as $k => $image) {
                             if ($image['cover']) {
                                 $coverImg = $obj->id . '-' . $image['id_image'];
                                 $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
@@ -88,10 +86,9 @@ if ($context->customer->isLogged()) {
                     }
                 }
                 $products[$i]['bought'] = false;
-                for ($j = 0, $k = 0; $j < sizeof($bought); ++$j)
-                {
+                for ($j = 0, $k = 0; $j < sizeof($bought); ++$j) {
                     if ($bought[$j]['id_product'] == $products[$i]['id_product'] and
-                            $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']) {
+                        $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']) {
                         $products[$i]['bought'][$k++] = $bought[$j];
                     }
                 }
@@ -99,8 +96,7 @@ if ($context->customer->isLogged()) {
 
             $productBoughts = array();
 
-            foreach ($products as $product)
-            {
+            foreach ($products as $product) {
                 if ($product['bought']) {
                     $productBoughts[] = $product;
                 }

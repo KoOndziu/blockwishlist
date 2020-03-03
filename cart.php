@@ -19,8 +19,8 @@ $id_product_attribute = (int) Tools::getValue('id_product_attribute');
 $module = new BlockWishList();
 
 if (Configuration::get('PS_TOKEN_ENABLE') == 1 &&
-        strcmp(Tools::getToken(false), Tools::getValue('token')) &&
-        $context->customer->isLogged() === true
+    strcmp(Tools::getToken(false), Tools::getValue('token')) &&
+    $context->customer->isLogged() === true
 ) {
     echo $module->l('Invalid token', 'cart');
 }

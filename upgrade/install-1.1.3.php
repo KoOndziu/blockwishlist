@@ -8,8 +8,7 @@ function upgrade_module_1_1_3()
 {
     $list_fields = Db::getInstance()->executeS('SHOW FIELDS FROM `' . _DB_PREFIX_ . 'wishlist`');
     if (is_array($list_fields)) {
-        foreach ($list_fields as $k => $field)
-        {
+        foreach ($list_fields as $k => $field) {
             $list_fields[$k] = $field['Field'];
         }
         if (in_array('is_default', $list_fields)) {

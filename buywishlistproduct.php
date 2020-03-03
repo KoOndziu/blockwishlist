@@ -51,8 +51,8 @@ if (Configuration::get('PS_TOKEN_ENABLE') == 1 && strcmp(Tools::getToken(false),
 }
 
 if (!Tools::strlen($error) &&
-        empty($token) === false &&
-        empty($id_product) === false) {
+    empty($token) === false &&
+    empty($id_product) === false) {
     $wishlist = WishList::getByToken($token);
     if ($wishlist !== false) {
         WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product, $id_product_attribute, $context->cart->id, 1);

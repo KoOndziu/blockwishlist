@@ -27,8 +27,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
             $nb_products = count($products);
             $priority_names = array(0 => $module->l('High'), 1 => $module->l('Medium'), 2 => $module->l('Low'));
 
-            for ($i = 0; $i < $nb_products; ++$i)
-            {
+            for ($i = 0; $i < $nb_products; ++$i) {
                 $obj = new Product((int) $products[$i]['id_product'], true, $this->context->language->id);
                 if (!Validate::isLoadedObject($obj)) {
                     continue;
@@ -48,8 +47,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
                         }
                     } else {
                         $images = $obj->getImages($this->context->language->id);
-                        foreach ($images as $image)
-                        {
+                        foreach ($images as $image) {
                             if ($image['cover']) {
                                 $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
                                 break;
@@ -76,8 +74,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 
             $wishlists = WishList::getByIdCustomer((int) $wishlist['id_customer']);
 
-            foreach ($wishlists as $key => $item)
-            {
+            foreach ($wishlists as $key => $item) {
                 if ($item['id_wishlist'] == $wishlist['id_wishlist']) {
                     unset($wishlists[$key]);
                     break;
@@ -85,13 +82,13 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
             }
 
             $this->context->smarty->assign(
-                    array(
-                        'current_wishlist' => $wishlist,
-                        'token' => $token,
-                        'ajax' => ((isset($ajax) && (int) $ajax == 1) ? '1' : '0'),
-                        'wishlists' => $wishlists,
-                        'products' => $products
-                    )
+                array(
+                    'current_wishlist' => $wishlist,
+                    'token' => $token,
+                    'ajax' => ((isset($ajax) && (int) $ajax == 1) ? '1' : '0'),
+                    'wishlists' => $wishlists,
+                    'products' => $products
+                )
             );
         }
 

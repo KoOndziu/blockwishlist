@@ -43,8 +43,7 @@ class BlockWishList extends Module
             }
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
             $sql = preg_split("/;\s*[\r\n]+/", $sql);
-            foreach ($sql as $query)
-            {
+            foreach ($sql as $query) {
                 if ($query) {
                     if (!Db::getInstance()->execute(trim($query))) {
                         return false;
@@ -54,14 +53,14 @@ class BlockWishList extends Module
         }
 
         if (!parent::install() ||
-                !$this->registerHook('rightColumn') ||
-                !$this->registerHook('productActions') ||
-                !$this->registerHook('cart') ||
-                !$this->registerHook('customerAccount') ||
-                !$this->registerHook('header') ||
-                !$this->registerHook('adminCustomers') ||
-                !$this->registerHook('displayProductListFunctionalButtons') ||
-                !$this->registerHook('top')) {
+            !$this->registerHook('rightColumn') ||
+            !$this->registerHook('productActions') ||
+            !$this->registerHook('cart') ||
+            !$this->registerHook('customerAccount') ||
+            !$this->registerHook('header') ||
+            !$this->registerHook('adminCustomers') ||
+            !$this->registerHook('displayProductListFunctionalButtons') ||
+            !$this->registerHook('top')) {
             return false;
         }
         /* This hook is optional */
@@ -82,7 +81,7 @@ class BlockWishList extends Module
     private function deleteTables()
     {
         return Db::getInstance()->execute(
-                        'DROP TABLE IF EXISTS
+                'DROP TABLE IF EXISTS
 			`' . _DB_PREFIX_ . 'wishlist`,
 			`' . _DB_PREFIX_ . 'wishlist_email`,
 			`' . _DB_PREFIX_ . 'wishlist_product`,
@@ -140,7 +139,7 @@ class BlockWishList extends Module
         if ($this->context->customer->isLogged()) {
             $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
             if (empty($this->context->cookie->id_wishlist) === true ||
-                    WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
+                WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
                 if (!count($wishlists)) {
                     $id_wishlist = false;
                 } else {
@@ -152,14 +151,14 @@ class BlockWishList extends Module
             }
 
             $this->smarty->assign(
-                    array(
-                        'id_wishlist' => $id_wishlist,
-                        'isLogged' => true,
-                        'wishlist_products' => ($id_wishlist == false ? [] : WishList::getProductByIdCustomer($id_wishlist,
-                                        $this->context->customer->id, $this->context->language->id, null, true)),
-                        'wishlists' => $wishlists,
-                        'ptoken' => Tools::getToken(false)
-                    )
+                array(
+                    'id_wishlist' => $id_wishlist,
+                    'isLogged' => true,
+                    'wishlist_products' => ($id_wishlist == false ? [] : WishList::getProductByIdCustomer($id_wishlist,
+                            $this->context->customer->id, $this->context->language->id, null, true)),
+                    'wishlists' => $wishlists,
+                    'ptoken' => Tools::getToken(false)
+                )
             );
         } else {
             $this->smarty->assign(array('wishlist_products' => false, 'wishlists' => false));
@@ -187,7 +186,7 @@ class BlockWishList extends Module
         if ($this->context->customer->isLogged()) {
             $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
             if (empty($this->context->cookie->id_wishlist) === true ||
-                    WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
+                WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
                 if (!count($wishlists)) {
                     $id_wishlist = false;
                 } else {
@@ -198,14 +197,14 @@ class BlockWishList extends Module
                 $id_wishlist = $this->context->cookie->id_wishlist;
             }
             $this->smarty->assign(
-                    array(
-                        'id_wishlist' => $id_wishlist,
-                        'isLogged' => true,
-                        'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist,
-                                        $this->context->customer->id, $this->context->language->id, null, true)),
-                        'wishlists' => $wishlists,
-                        'ptoken' => Tools::getToken(false)
-                    )
+                array(
+                    'id_wishlist' => $id_wishlist,
+                    'isLogged' => true,
+                    'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist,
+                            $this->context->customer->id, $this->context->language->id, null, true)),
+                    'wishlists' => $wishlists,
+                    'ptoken' => Tools::getToken(false)
+                )
             );
         } else {
             $this->smarty->assign(array('wishlist_products' => false, 'wishlists' => false));
@@ -248,15 +247,13 @@ class BlockWishList extends Module
         $wishlist = new WishList($id_wishlist);
         $products = WishList::getProductByIdCustomer($id_wishlist, $wishlist->id_customer, $this->context->language->id);
         $nb_products = count($products);
-        for ($i = 0; $i < $nb_products; ++$i)
-        {
+        for ($i = 0; $i < $nb_products; ++$i) {
             $obj = new Product((int) $products[$i]['id_product'], false, $this->context->language->id);
             if (!Validate::isLoadedObject($obj)) {
                 continue;
             } else {
                 $images = $obj->getImages($this->context->language->id);
-                foreach ($images as $image)
-                {
+                foreach ($images as $image) {
                     if ($image['cover']) {
                         $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
                         break;
@@ -278,13 +275,12 @@ class BlockWishList extends Module
 			</thead>
 			<tbody>';
         $priority = array($this->l('High'), $this->l('Medium'), $this->l('Low'));
-        foreach ($products as $product)
-        {
+        foreach ($products as $product) {
             $this->html .= '
 				<tr>
 					<td class="first_item">
 						<img src="' . $this->context->link->getImageLink($product['link_rewrite'], $product['cover'],
-                            ImageType::getFormatedName('small')) . '" alt="' . htmlentities($product['name'], ENT_COMPAT, 'UTF-8') . '" style="float:left;" />
+                    ImageType::getFormatedName('small')) . '" alt="' . htmlentities($product['name'], ENT_COMPAT, 'UTF-8') . '" style="float:left;" />
 						' . $product['name'];
             if (isset($product['attributes_small'])) {
                 $this->html .= '<br /><i>' . htmlentities($product['attributes_small'], ENT_COMPAT, 'UTF-8') . '</i>';
@@ -321,8 +317,7 @@ class BlockWishList extends Module
             $this->html .= '<span>' . $this->l('Wishlist') . ': </span> <select name="id_wishlist" onchange="$(\'#listing\').submit();">';
 
             if (is_array($wishlists)) {
-                foreach ($wishlists as $wishlist)
-                {
+                foreach ($wishlists as $wishlist) {
                     $this->html .= '<option value="' . (int) $wishlist['id_wishlist'] . '"';
                     if ($wishlist['id_wishlist'] == $id_wishlist) {
                         $this->html .= ' selected="selected"';
@@ -359,8 +354,7 @@ class BlockWishList extends Module
     public function renderForm()
     {
         $customers = array();
-        foreach (WishList::getCustomers() as $c)
-        {
+        foreach (WishList::getCustomers() as $c) {
             $customers[$c['id_customer']]['id_customer'] = $c['id_customer'];
             $customers[$c['id_customer']]['name'] = $c['firstname'] . ' ' . $c['lastname'];
         }
@@ -412,7 +406,7 @@ class BlockWishList extends Module
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitModule';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) . '&configure=' . $this->name
-                . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
+            . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = array(
             'fields_value' => $this->getConfigFieldsValues(),
@@ -436,8 +430,7 @@ class BlockWishList extends Module
         $wishlist = new WishList($id_wishlist);
         $products = WishList::getProductByIdCustomer($id_wishlist, $wishlist->id_customer, $this->context->language->id);
 
-        foreach ($products as $key => $val)
-        {
+        foreach ($products as $key => $val) {
             $image = Image::getCover($val['id_product']);
             $products[$key]['image'] = $this->context->link->getImageLink($val['link_rewrite'], $image['id_image'], ImageType::getFormatedName('small'));
         }

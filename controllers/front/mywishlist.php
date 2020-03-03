@@ -69,20 +69,20 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
                         $wishlist->token = Tools::strtoupper(Tools::substr(sha1(uniqid(rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
                         $wishlist->add();
                         Mail::Send(
-                                $this->context->language->id,
-                                'wishlink',
-                                Mail::l('Your wishlist\'s link', $this->context->language->id),
-                                array(
-                                    '{wishlist}' => $wishlist->name,
-                                    '{message}' => $this->context->link->getModuleLink('blockwishlist', 'view', array('token' => $wishlist->token))
-                                ),
-                                $this->context->customer->email,
-                                $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
-                                null,
-                                (string) Configuration::get('PS_SHOP_NAME'),
-                                null,
-                                null,
-                                $this->module->getLocalPath() . 'mails/');
+                            $this->context->language->id,
+                            'wishlink',
+                            Mail::l('Your wishlist\'s link', $this->context->language->id),
+                            array(
+                                '{wishlist}' => $wishlist->name,
+                                '{message}' => $this->context->link->getModuleLink('blockwishlist', 'view', array('token' => $wishlist->token))
+                            ),
+                            $this->context->customer->email,
+                            $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
+                            null,
+                            (string) Configuration::get('PS_SHOP_NAME'),
+                            null,
+                            null,
+                            $this->module->getLocalPath() . 'mails/');
 
                         Tools::redirect($this->context->link->getModuleLink('blockwishlist', 'mywishlist'));
                     }
@@ -123,7 +123,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(Tools::jsonEncode(array('success' => false,
-                        'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+                    'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
         }
 
         $default = Tools::getIsset('default');
@@ -137,7 +137,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
             $wishlist->delete();
         } else {
             die(Tools::jsonEncode(array('success' => false,
-                        'error' => $this->module->l('Cannot delete this wishlist', 'mywishlist'))));
+                    'error' => $this->module->l('Cannot delete this wishlist', 'mywishlist'))));
         }
 
         if ($default_change) {
@@ -145,8 +145,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
             if (count($array)) {
                 die(Tools::jsonEncode(array(
-                            'success' => true,
-                            'id_default' => $array[0]['id_wishlist']
+                        'success' => true,
+                        'id_default' => $array[0]['id_wishlist']
                 )));
             }
         }
@@ -158,7 +158,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(Tools::jsonEncode(array('success' => false,
-                        'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+                    'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
         }
 
         $default = Tools::getIsset('default');
@@ -179,7 +179,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(Tools::jsonEncode(array('success' => false,
-                        'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+                    'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
         }
 
         $id_product = (int) Tools::getValue('id_product');
@@ -193,9 +193,9 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
         //check the data is ok
         if (!$id_product || !is_int($id_product_attribute) || !$quantity ||
-                !is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist ||
-                (Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer != $this->context->customer->id) ||
-                (Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer != $this->context->customer->id)) {
+            !is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist ||
+            (Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer != $this->context->customer->id) ||
+            (Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer != $this->context->customer->id)) {
             die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while moving product to another list', 'mywishlist'))));
         }
 
