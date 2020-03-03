@@ -63,11 +63,11 @@ if ($context->customer->isLogged()) {
                 sprintf(Mail::l('Message from %1$s %2$s', $context->language->id),
                     $customer->lastname, $customer->firstname),
                 array(
-                '{lastname}' => $customer->lastname,
-                '{firstname}' => $customer->firstname,
-                '{wishlist}' => $wishlist['name'],
-                '{message}' => $context->link->getModuleLink('blockwishlist',
-                    'view', array('token' => $wishlist['token']))
+                    '{lastname}'  => $customer->lastname,
+                    '{firstname}' => $customer->firstname,
+                    '{wishlist}'  => $wishlist['name'],
+                    '{message}'   => $context->link->getModuleLink('blockwishlist',
+                        'view', array('token' => $wishlist['token']))
                 ), $to, $toName, $customer->email,
                 $customer->firstname.' '.$customer->lastname, null, null,
                 dirname(__FILE__).'/mails/'

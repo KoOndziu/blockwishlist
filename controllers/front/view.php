@@ -28,7 +28,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 
             $nb_products    = count($products);
             $priority_names = array(0 => $module->l('High'), 1 => $module->l('Medium'),
-            2 => $module->l('Low'));
+                2 => $module->l('Low'));
 
             for ($i = 0; $i < $nb_products; ++$i) {
                 $obj = new Product((int) $products[$i]['id_product'], true,
@@ -88,11 +88,11 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 
             $this->context->smarty->assign(
                 array(
-                'current_wishlist' => $wishlist,
-                'token' => $token,
-                'ajax' => ((isset($ajax) && (int) $ajax == 1) ? '1' : '0'),
-                'wishlists' => $wishlists,
-                'products' => $products
+                    'current_wishlist' => $wishlist,
+                    'token'            => $token,
+                    'ajax'             => ((isset($ajax) && (int) $ajax == 1) ? '1' : '0'),
+                    'wishlists'        => $wishlists,
+                    'products'         => $products
                 )
             );
         }

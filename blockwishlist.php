@@ -154,13 +154,13 @@ class BlockWishList extends Module
 
             $this->smarty->assign(
                 array(
-                'id_wishlist' => $id_wishlist,
-                'isLogged' => true,
-                'wishlist_products' => ($id_wishlist == false ? [] : WishList::getProductByIdCustomer($id_wishlist,
-                        $this->context->customer->id,
-                        $this->context->language->id, null, true)),
-                'wishlists' => $wishlists,
-                'ptoken' => Tools::getToken(false)
+                    'id_wishlist'       => $id_wishlist,
+                    'isLogged'          => true,
+                    'wishlist_products' => ($id_wishlist == false ? [] : WishList::getProductByIdCustomer($id_wishlist,
+                            $this->context->customer->id,
+                            $this->context->language->id, null, true)),
+                    'wishlists'         => $wishlists,
+                    'ptoken'            => Tools::getToken(false)
                 )
             );
         } else {
@@ -187,7 +187,7 @@ class BlockWishList extends Module
             ['position' => 'bottom', 'priority' => 150]);
 
         $this->smarty->assign(array('wishlist_link' => $this->context->link->getModuleLink('blockwishlist',
-            'mywishlist')));
+                'mywishlist')));
     }
 
     public function hookRightColumn($params)
@@ -208,13 +208,13 @@ class BlockWishList extends Module
             }
             $this->smarty->assign(
                 array(
-                'id_wishlist' => $id_wishlist,
-                'isLogged' => true,
-                'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist,
-                        $this->context->customer->id,
-                        $this->context->language->id, null, true)),
-                'wishlists' => $wishlists,
-                'ptoken' => Tools::getToken(false)
+                    'id_wishlist'       => $id_wishlist,
+                    'isLogged'          => true,
+                    'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist,
+                            $this->context->customer->id,
+                            $this->context->language->id, null, true)),
+                    'wishlists'         => $wishlists,
+                    'ptoken'            => Tools::getToken(false)
                 )
             );
         } else {
@@ -234,11 +234,10 @@ class BlockWishList extends Module
     {
         $cookie = $params['cookie'];
         $this->smarty->assign(array(
-        'id_product' => (int) Tools::getValue('id_product'),
+            'id_product' => (int) Tools::getValue('id_product'),
         ));
         $this->smarty->assign(array(
-        'wishlists' => (isset($context->cookie->id_customer) ? WishList::getByIdCustomer($context->cookie->id_customer)
-                : false),
+            'wishlists' => (isset($context->cookie->id_customer) ? WishList::getByIdCustomer($context->cookie->id_customer) : false),
         ));
         return ($this->display(__FILE__,
                 'views/templates/front/blockwishlist_extra.tpl'));
@@ -380,39 +379,39 @@ class BlockWishList extends Module
         }
 
         $fields_form = array(
-        'form' => array(
-        'legend' => array(
-        'title' => $this->l('Listing'),
-        'icon' => 'icon-cogs'
-        ),
-        'input' => array(
-        array(
-        'type' => 'select',
-        'label' => $this->l('Customers :'),
-        'name' => 'id_customer',
-        'options' => array(
-        'default' => array('value' => 0, 'label' => $this->l('Choose customer')),
-        'query' => $customers,
-        'id' => 'id_customer',
-        'name' => 'name'
-        ),
-        )
-        ),
-        ),
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('Listing'),
+                    'icon'  => 'icon-cogs'
+                ),
+                'input'  => array(
+                    array(
+                        'type'    => 'select',
+                        'label'   => $this->l('Customers :'),
+                        'name'    => 'id_customer',
+                        'options' => array(
+                            'default' => array('value' => 0, 'label' => $this->l('Choose customer')),
+                            'query'   => $customers,
+                            'id'      => 'id_customer',
+                            'name'    => 'name'
+                        ),
+                    )
+                ),
+            ),
         );
 
         if ($id_customer = Tools::getValue('id_customer')) {
             $wishlists                      = WishList::getByIdCustomer($id_customer);
             $fields_form['form']['input'][] = array(
-            'type' => 'select',
-            'label' => $this->l('Wishlist :'),
-            'name' => 'id_wishlist',
-            'options' => array(
-            'default' => array('value' => 0, 'label' => $this->l('Choose wishlist')),
-            'query' => $wishlists,
-            'id' => 'id_wishlist',
-            'name' => 'name'
-            ),
+                'type'    => 'select',
+                'label'   => $this->l('Wishlist :'),
+                'name'    => 'id_wishlist',
+                'options' => array(
+                    'default' => array('value' => 0, 'label' => $this->l('Choose wishlist')),
+                    'query'   => $wishlists,
+                    'id'      => 'id_wishlist',
+                    'name'    => 'name'
+                ),
             );
         }
 
@@ -421,8 +420,7 @@ class BlockWishList extends Module
         $helper->table                    = $this->table;
         $lang                             = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language    = $lang->id;
-        $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG')
-                ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
+        $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
 
         $helper->identifier    = $this->identifier;
         $helper->submit_action = 'submitModule';
@@ -431,9 +429,9 @@ class BlockWishList extends Module
             .'&tab_module='.$this->tab.'&module_name='.$this->name;
         $helper->token         = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars      = array(
-        'fields_value' => $this->getConfigFieldsValues(),
-        'languages' => $this->context->controller->getLanguages(),
-        'id_language' => $this->context->language->id
+            'fields_value' => $this->getConfigFieldsValues(),
+            'languages'    => $this->context->controller->getLanguages(),
+            'id_language'  => $this->context->language->id
         );
 
         return $helper->generateForm(array($fields_form));
@@ -442,8 +440,8 @@ class BlockWishList extends Module
     public function getConfigFieldsValues()
     {
         return array(
-        'id_customer' => Tools::getValue('id_customer'),
-        'id_wishlist' => Tools::getValue('id_wishlist'),
+            'id_customer' => Tools::getValue('id_customer'),
+            'id_wishlist' => Tools::getValue('id_wishlist'),
         );
     }
 
@@ -460,27 +458,27 @@ class BlockWishList extends Module
         }
 
         $fields_list = array(
-        'image' => array(
-        'title' => $this->l('Image'),
-        'type' => 'image',
-        ),
-        'name' => array(
-        'title' => $this->l('Product'),
-        'type' => 'text',
-        ),
-        'attributes_small' => array(
-        'title' => $this->l('Combination'),
-        'type' => 'text',
-        ),
-        'quantity' => array(
-        'title' => $this->l('Quantity'),
-        'type' => 'text',
-        ),
-        'priority' => array(
-        'title' => $this->l('Priority'),
-        'type' => 'priority',
-        'values' => array($this->l('High'), $this->l('Medium'), $this->l('Low')),
-        ),
+            'image'            => array(
+                'title' => $this->l('Image'),
+                'type'  => 'image',
+            ),
+            'name'             => array(
+                'title' => $this->l('Product'),
+                'type'  => 'text',
+            ),
+            'attributes_small' => array(
+                'title' => $this->l('Combination'),
+                'type'  => 'text',
+            ),
+            'quantity'         => array(
+                'title' => $this->l('Quantity'),
+                'type'  => 'text',
+            ),
+            'priority'         => array(
+                'title'  => $this->l('Priority'),
+                'type'   => 'priority',
+                'values' => array($this->l('High'), $this->l('Medium'), $this->l('Low')),
+            ),
         );
 
         $helper                = new HelperList();
@@ -496,7 +494,7 @@ class BlockWishList extends Module
         $helper->token         = Tools::getAdminTokenLite('AdminModules');
         $helper->currentIndex  = AdminController::$currentIndex.'&configure='.$this->name;
         $helper->tpl_vars      = array('priority' => array($this->l('High'), $this->l('Medium'),
-        $this->l('Low')));
+                $this->l('Low')));
 
         return $helper->generateList($products, $fields_list);
     }

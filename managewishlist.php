@@ -110,12 +110,12 @@ if ($context->customer->isLogged()) {
                 }
             }
             $context->smarty->assign(array(
-            'products' => $products,
-            'productsBoughts' => $productBoughts,
-            'id_wishlist' => $id_wishlist,
-            'refresh' => $refresh,
-            'token_wish' => $wishlist->token,
-            'wishlists' => WishList::getByIdCustomer($context->cookie->id_customer)
+                'products'        => $products,
+                'productsBoughts' => $productBoughts,
+                'id_wishlist'     => $id_wishlist,
+                'refresh'         => $refresh,
+                'token_wish'      => $wishlist->token,
+                'wishlists'       => WishList::getByIdCustomer($context->cookie->id_customer)
             ));
 
             // Instance of module class for translations
