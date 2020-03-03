@@ -33,58 +33,47 @@ require_once(dirname(__FILE__).'/WishList.php');
 require_once(dirname(__FILE__).'/blockwishlist.php');
 $context = Context::getContext();
 if ($context->customer->isLogged()) {
-    $action               = Tools::getValue('action');
-    $id_wishlist          = (int) Tools::getValue('id_wishlist');
-    $id_product           = (int) Tools::getValue('id_product');
+    $action = Tools::getValue('action');
+    $id_wishlist = (int) Tools::getValue('id_wishlist');
+    $id_product = (int) Tools::getValue('id_product');
     $id_product_attribute = (int) Tools::getValue('id_product_attribute');
-    $quantity             = (int) Tools::getValue('quantity');
-    $priority             = Tools::getValue('priority');
-    $wishlist             = new WishList((int) ($id_wishlist));
-    $refresh              = ((Tools::getValue('refresh') == 'true') ? 1 : 0);
+    $quantity = (int) Tools::getValue('quantity');
+    $priority = Tools::getValue('priority');
+    $wishlist = new WishList((int) ($id_wishlist));
+    $refresh = ((Tools::getValue('refresh') == 'true') ? 1 : 0);
     if (empty($id_wishlist) === false) {
         if (!strcmp($action, 'update')) {
-            WishList::updateProduct($id_wishlist, $id_product,
-                $id_product_attribute, $priority, $quantity);
+            WishList::updateProduct($id_wishlist, $id_product, $id_product_attribute, $priority, $quantity);
         } else {
             if (!strcmp($action, 'delete')) {
-                WishList::removeProduct($id_wishlist,
-                    (int) $context->customer->id, $id_product,
-                    $id_product_attribute);
+                WishList::removeProduct($id_wishlist, (int) $context->customer->id, $id_product, $id_product_attribute);
             }
 
-            $products = WishList::getProductByIdCustomer($id_wishlist,
-                    $context->customer->id, $context->language->id);
-            $bought   = WishList::getBoughtProduct($id_wishlist);
-            $link     = new Link();
+            $products = WishList::getProductByIdCustomer($id_wishlist, $context->customer->id, $context->language->id);
+            $bought = WishList::getBoughtProduct($id_wishlist);
+            $link = new Link();
 
             for ($i = 0; $i < sizeof($products); ++$i) {
-                $obj = new Product((int) ($products[$i]['id_product']), false,
-                    $context->language->id);
+                $obj = new Product((int) ($products[$i]['id_product']), false, $context->language->id);
                 if (!Validate::isLoadedObject($obj)) {
                     continue;
                 } else {
                     if ($products[$i]['id_product_attribute'] != 0) {
                         $combination_imgs = $obj->getCombinationImages($context->language->id);
                         if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
-
-                            $coverImg                   = $obj->id.'-'.$combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
-                            $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'],
-                                $coverImg, ImageType::getFormattedName('home'));
+                            $coverImg = $obj->id.'-'.$combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
+                            $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
                         } else {
-                            $cover                      = Product::getCover($obj->id);
-                            $coverImg                   = $obj->id.'-'.$cover['id_image'];
-                            $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'],
-                                $coverImg, ImageType::getFormattedName('home'));
+                            $cover = Product::getCover($obj->id);
+                            $coverImg = $obj->id.'-'.$cover['id_image'];
+                            $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
                         }
                     } else {
                         $images = $obj->getImages($context->language->id);
                         foreach ($images as $k => $image) {
                             if ($image['cover']) {
-                                $coverImg                   = $obj->id.'-'.$image['id_image'];
-                                $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'],
-                                    $coverImg,
-                                    ImageType::getFormattedName('home'));
-
+                                $coverImg = $obj->id.'-'.$image['id_image'];
+                                $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
                                 break;
                             }
                         }
@@ -109,14 +98,14 @@ if ($context->customer->isLogged()) {
                     $productBoughts[] = $product;
                 }
             }
-            $context->smarty->assign(array(
+            $context->smarty->assign([
                 'products'        => $products,
                 'productsBoughts' => $productBoughts,
                 'id_wishlist'     => $id_wishlist,
                 'refresh'         => $refresh,
                 'token_wish'      => $wishlist->token,
                 'wishlists'       => WishList::getByIdCustomer($context->cookie->id_customer)
-            ));
+            ]);
 
             // Instance of module class for translations
             $module = new BlockWishList();

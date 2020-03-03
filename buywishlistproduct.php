@@ -32,7 +32,7 @@ require_once(dirname(__FILE__).'/../../init.php');
 require_once(dirname(__FILE__).'/WishList.php');
 require_once(dirname(__FILE__).'/blockwishlist.php');
 
-$error   = '';
+$error = '';
 $context = Context::getContext();
 if (is_null($context->cart->id)) {
     $context->cart->add();
@@ -40,13 +40,12 @@ if (is_null($context->cart->id)) {
 }
 
 // Instance of module class for translations
-$module               = new BlockWishList();
-$token                = Tools::getValue('token');
-$id_product           = (int) Tools::getValue('id_product');
+$module = new BlockWishList();
+$token = Tools::getValue('token');
+$id_product = (int) Tools::getValue('id_product');
 $id_product_attribute = (int) Tools::getValue('id_product_attribute');
 
-if (Configuration::get('PS_TOKEN_ENABLE') == 1 && strcmp(Tools::getToken(false),
-        Tools::getValue('static_token'))) {
+if (Configuration::get('PS_TOKEN_ENABLE') == 1 && strcmp(Tools::getToken(false), Tools::getValue('static_token'))) {
     $error = $module->l('Invalid token', 'buywishlistproduct');
 }
 
@@ -55,8 +54,7 @@ if (!Tools::strlen($error) &&
     empty($id_product) === false) {
     $wishlist = WishList::getByToken($token);
     if ($wishlist !== false) {
-        WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product,
-            $id_product_attribute, $context->cart->id, 1);
+        WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product, $id_product_attribute, $context->cart->id, 1);
     }
 } else {
     $error = $module->l('You must log in', 'buywishlistproduct');

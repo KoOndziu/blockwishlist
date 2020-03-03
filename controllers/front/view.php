@@ -22,32 +22,27 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
             $wishlist = WishList::getByToken($token);
 
             WishList::refreshWishList($wishlist['id_wishlist']);
-            $products = WishList::getProductByIdCustomer((int) $wishlist['id_wishlist'],
-                    (int) $wishlist['id_customer'],
-                    $this->context->language->id, null, true);
+            $products = WishList::getProductByIdCustomer((int) $wishlist['id_wishlist'], (int) $wishlist['id_customer'], $this->context->language->id, null, true);
 
-            $nb_products    = count($products);
-            $priority_names = array(0 => $module->l('High'), 1 => $module->l('Medium'),
-                2 => $module->l('Low'));
+            $nb_products = count($products);
+            $priority_names = array(0 => $module->l('High'), 1 => $module->l('Medium'), 2 => $module->l('Low'));
 
             for ($i = 0; $i < $nb_products; ++$i) {
-                $obj = new Product((int) $products[$i]['id_product'], true,
-                    $this->context->language->id);
+                $obj = new Product((int) $products[$i]['id_product'], true, $this->context->language->id);
                 if (!Validate::isLoadedObject($obj)) {
                     continue;
                 } else {
-                    $products[$i]['priority_name']      = $priority_names[$products[$i]['priority']];
-                    $quantity                           = Product::getQuantity((int) $products[$i]['id_product'],
-                            $products[$i]['id_product_attribute']);
+                    $products[$i]['priority_name'] = $priority_names[$products[$i]['priority']];
+                    $quantity = Product::getQuantity((int) $products[$i]['id_product'], $products[$i]['id_product_attribute']);
                     $products[$i]['attribute_quantity'] = $quantity;
-                    $products[$i]['product_quantity']   = $quantity;
-                    $products[$i]['allow_oosp']         = $obj->isAvailableWhenOutOfStock((int) $obj->out_of_stock);
+                    $products[$i]['product_quantity'] = $quantity;
+                    $products[$i]['allow_oosp'] = $obj->isAvailableWhenOutOfStock((int) $obj->out_of_stock);
                     if ($products[$i]['id_product_attribute'] != 0) {
                         $combination_imgs = $obj->getCombinationImages($this->context->language->id);
                         if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
                             $products[$i]['cover'] = $obj->id.'-'.$combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
                         } else {
-                            $cover                 = Product::getCover($obj->id);
+                            $cover = Product::getCover($obj->id);
                             $products[$i]['cover'] = $obj->id.'-'.$cover['id_image'];
                         }
                     } else {
