@@ -119,9 +119,8 @@ class BlockWishList extends Module
 		//TODO : Add cache
 		if ($this->context->customer->isLogged())
 			$this->smarty->assign('wishlists', Wishlist::getByIdCustomer($this->context->customer->id));
-
 		$this->smarty->assign('product', $params['product']);
-		return $this->display(__FILE__, 'blockwishlist_button.tpl');
+		return $this->display(__FILE__, 'views/templates/front/blockwishlist_button.tpl');
 	}
 
 	public function hookTop($params)
@@ -160,7 +159,7 @@ class BlockWishList extends Module
 		
 		// Media::addJsDef(array('pepito' => 'xxxx'));
 
-		return $this->display(__FILE__, 'blockwishlist_top.tpl');
+		return $this->display(__FILE__, 'views/templates/front/blockwishlist_top.tpl');
 	}
 
 	public function hookHeader($params)
@@ -206,7 +205,7 @@ class BlockWishList extends Module
 		else
 			$this->smarty->assign(array('wishlist_products' => false, 'wishlists' => false));
 
-		return ($this->display(__FILE__, 'blockwishlist.tpl'));
+		return ($this->display(__FILE__, 'views/templates/front/blockwishlist.tpl'));
 	}
 
 	public function hookLeftColumn($params)
@@ -217,23 +216,18 @@ class BlockWishList extends Module
 	public function hookProductActions($params)
 	{
 		$cookie = $params['cookie'];
-
 		$this->smarty->assign(array(
 			'id_product' => (int)Tools::getValue('id_product'),
 		));
-
-		
 		$this->smarty->assign(array(
 			'wishlists' => (isset($cookie->id_customer)? WishList::getByIdCustomer($cookie->id_customer): false),
 		));
-		
-
-		return ($this->display(__FILE__, 'blockwishlist-extra.tpl'));
+		return ($this->display(__FILE__, 'views/templates/front/blockwishlist_extra.tpl'));
 	}
 
 	public function hookCustomerAccount($params)
 	{
-		return $this->display(__FILE__, 'my-account.tpl');
+		return $this->display(__FILE__, 'views/templates/front/customerAccount.tpl');
 	}
 
 	public function hookDisplayMyAccountBlock($params)

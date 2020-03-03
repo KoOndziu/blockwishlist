@@ -1,4 +1,8 @@
-{extends "$layout"}
+{extends file='customer/page.tpl'}
+
+{block name='page_title'}
+  {l s='My wishlists' mod='blockwishlist'}
+{/block}
 
 {block name='breadcrumb_item'}
 	{$smarty.block.parent}
@@ -9,15 +13,9 @@
 	</li>	
 {/block}
 
-{block name="content"}
-<!--front/mywishlist.tpl-->
-<div id="main">
-	<h1 class="hed-tit">
-		{l s='New wishlist' mod='blockwishlist'}
-	</h1>
-
-	<div id="mywishlist">
-
+{block name="page_content"}
+	<h6>{l s='New wishlist' mod='blockwishlist'}</h6>
+	<div id="mywishlist" class="block_wishlist">
 		{if isset($errors) && $errors}
 			<div class="alert alert-danger" role="alert">
 				<ol>
@@ -30,25 +28,30 @@
 
 		{if $id_customer|intval neq 0}
 			<form method="post" class="std box" id="form_wishlist">
-				<fieldset>
-					<div class="form-group">
-						<input type="hidden" name="token" value="{$token|escape:'html':'UTF-8'}" />
-						<label class="align_right" for="name">
-							{l s='Name' mod='blockwishlist'}
-						</label>
-						<input type="text" id="name" name="name" class="inputTxt form-control" value="{if isset($smarty.post.name) and $errors|@count > 0}{$smarty.post.name|escape:'html':'UTF-8'}{/if}" />
+				<p>
+					<button name="submitWishlist" type="submit" id="submitWishlist" class="btn btn-primary float-xs-right hidden-xs-down" >
+						<span>{l s='Save' mod='blockwishlist'}</span>
+					</button>
+					<div class="input-wrapper">
+						<input 
+							name="name" 
+							type="text" 
+							id="name" 
+							class="inputTxt form-control" 
+							value="{if isset($smarty.post.name) and $errors|@count > 0}{$smarty.post.name|escape:'html':'UTF-8'}{/if}"
+							placeholder="{l s='Name' mod='blockwishlist'}"
+						>						
 					</div>
-					<p class="submit">
-	                    <button id="submitWishlist" class="btn btn-default button button-medium" type="submit" name="submitWishlist">
-	                    	<span>{l s='Save' mod='blockwishlist'}<i class="icon-chevron-right right"></i></span>
-	                    </button>
-					</p>
-				</fieldset>
+					<input type="hidden" name="token" value="{$token|escape:'html':'UTF-8'}" />
+					<div class="clearfix"></div>
+				</p>
 			</form>
+					
 			{if $wishlists}
+				<h6>{l s='Wishlists' mod='blockwishlist'}</h6>
 				<div id="block-history" class="block-center">
-					<table class="table table-bordered">
-						<thead>
+					<table class="table table-striped table-bordered table-labeled">
+						<thead class="thead-default">
 							<tr>
 								<th class="first_item">{l s='Name' mod='blockwishlist'}</th>
 								<th class="item mywishlist_first">{l s='Qty' mod='blockwishlist'}</th>
@@ -112,6 +115,4 @@
 			{/if}
 		{/if}
 	</div>
-</div>
-<!-- End front/mywishlist.tpl -->
 {/block}

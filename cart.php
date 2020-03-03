@@ -58,10 +58,10 @@ if ($context->customer->isLogged())
 	}
 	$context->smarty->assign('products', WishList::getProductByIdCustomer($context->cookie->id_wishlist, $context->customer->id, $context->language->id, null, true));
 
-	if (Tools::file_exists_cache(_PS_THEME_DIR_.'modules/blockwishlist/blockwishlist-ajax.tpl'))
-		$context->smarty->display(_PS_THEME_DIR_.'modules/blockwishlist/blockwishlist-ajax.tpl');
-	elseif (Tools::file_exists_cache(dirname(__FILE__).'/blockwishlist-ajax.tpl'))
-		$context->smarty->display(dirname(__FILE__).'/blockwishlist-ajax.tpl');
+	if (Tools::file_exists_cache(_PS_THEME_DIR_.'modules/blockwishlist/views/templates/front/blockwishlist-ajax.tpl'))
+		$context->smarty->display(_PS_THEME_DIR_.'modules/blockwishlist/views/templates/front/blockwishlist-ajax.tpl');
+	elseif (Tools::file_exists_cache(dirname(__FILE__).'/views/templates/front/blockwishlist-ajax.tpl'))
+		$context->smarty->display(dirname(__FILE__).'/views/templates/front/blockwishlist-ajax.tpl');
 	else
 		echo $module->l('No template found', 'cart');
 } else
