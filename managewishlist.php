@@ -80,7 +80,7 @@ if ($context->customer->isLogged()) {
 							}
 					}
 					if (!isset($products[$i]['image_link']))
-						$products[$i]['image_link'] = 'img/p/' . $context->language->iso_code . '-default-home_default.jpg';
+						$products[$i]['image_link'] = 'img/p/' . $context->language->iso_code . ImageType::getFormattedName('home');
 				}
 				$products[$i]['bought'] = false;
 				for ($j = 0, $k = 0; $j < sizeof($bought); ++$j) {

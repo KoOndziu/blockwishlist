@@ -71,7 +71,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 										$this->context->customer->email,
 										$this->context->customer->firstname . ' ' . $this->context->customer->lastname,
 										null,
-										strval(Configuration::get('PS_SHOP_NAME')),
+										(string) Configuration::get('PS_SHOP_NAME'),
 										null,
 										null,
 										$this->module->getLocalPath() . 'mails/');

@@ -320,7 +320,6 @@ class BlockWishList extends Module
 					if ($wishlist['id_wishlist'] == $id_wishlist)
 					{
 						$this->html .= ' selected="selected"';
-						$counter = $wishlist['counter'];
 					}
 					$this->html .= '>'.htmlentities($wishlist['name'], ENT_COMPAT, 'UTF-8').'</option>';
 				}
