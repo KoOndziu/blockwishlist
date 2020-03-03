@@ -25,24 +25,26 @@
  *  International Registered Trademark & Property of PrestaShop SA
  */
 
+/* SSL Management */
+$useSSL = true;
+
 require_once(dirname(__FILE__) . '/../../config/config.inc.php');
 require_once(dirname(__FILE__) . '/../../init.php');
 require_once(dirname(__FILE__) . '/WishList.php');
 require_once(dirname(__FILE__) . '/blockwishlist.php');
 
 $error = '';
-
-// Instance of module class for translations
-$module = new BlockWishList();
 $context = Context::getContext();
-$token = Tools::getValue('token');
-$id_product = (int) Tools::getValue('id_product');
-$id_product_attribute = (int) Tools::getValue('id_product_attribute');
-
 if (is_null($context->cart->id)) {
 	$context->cart->add();
 	$context->cookie->__set('id_cart', $context->cart->id);
 }
+
+// Instance of module class for translations
+$module = new BlockWishList();
+$token = Tools::getValue('token');
+$id_product = (int) Tools::getValue('id_product');
+$id_product_attribute = (int) Tools::getValue('id_product_attribute');
 
 if (Configuration::get('PS_TOKEN_ENABLE') == 1 && strcmp(Tools::getToken(false), Tools::getValue('static_token')))
 	$error = $module->l('Invalid token', 'buywishlistproduct');
