@@ -1,4 +1,5 @@
 <?php
+
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_button_641254d77e7a473aa5910574f3f9453c'] = 'Lista życzeń';
@@ -26,7 +27,7 @@ $_MODULE['<{blockwishlist}prestashop>blockwishlist_top_8a6830ac12924a940aa0a83d5
 $_MODULE['<{blockwishlist}prestashop>cart_607e1d854783c8229998ac2b5b6923d3'] = 'Nieprawidłowy token';
 $_MODULE['<{blockwishlist}prestashop>cart_a9839ad48cf107667f73bad1d651f2ca'] = 'Nie znaleziono szablonu';
 $_MODULE['<{blockwishlist}prestashop>cart_16a23698e7cf5188ce1c07df74298076'] = 'Musisz być zalogowany żeby zarządzać twoją listą życzeń.';
-	
+
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_7ec9cceb94985909c6994e95c31c1aa8'] = 'Moje listy życzeń';
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_641254d77e7a473aa5910574f3f9453c'] = 'Lista życzeń';
 $_MODULE['<{blockwishlist}prestashop>blockwishlist_4a84e5921e203aede886d04fc41a414b'] = 'usuń ten produkt z mojej listy życzeń';
