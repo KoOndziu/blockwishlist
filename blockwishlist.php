@@ -220,7 +220,7 @@ class BlockWishList extends Module
 			'id_product' => (int)Tools::getValue('id_product'),
 		));
 		$this->smarty->assign(array(
-			'wishlists' => (isset($this->context->cookie->id_customer)? WishList::getByIdCustomer($this->context->cookie->id_customer): false),
+			'wishlists' => (isset($context->cookie->id_customer)? WishList::getByIdCustomer($context->cookie->id_customer): false),
 		));
 		return ($this->display(__FILE__, 'views/templates/front/blockwishlist_extra.tpl'));
 	}

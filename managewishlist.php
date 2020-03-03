@@ -101,7 +101,7 @@ if ($context->customer->isLogged()) {
 					'id_wishlist' => $id_wishlist,
 					'refresh' => $refresh,
 					'token_wish' => $wishlist->token,
-					'wishlists' => WishList::getByIdCustomer($this->context->cookie->id_customer)
+					'wishlists' => WishList::getByIdCustomer($context->cookie->id_customer)
 			));
 
 			// Instance of module class for translations

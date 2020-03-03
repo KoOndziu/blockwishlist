@@ -33,7 +33,7 @@ $error = '';
 
 // Instance of module class for translations
 $module = new BlockWishList();
-
+$context = Context::getContext();
 $token = Tools::getValue('token');
 $id_product = (int)Tools::getValue('id_product');
 $id_product_attribute = (int)Tools::getValue('id_product_attribute');
@@ -46,7 +46,7 @@ if (!Tools::strlen($error) &&
 {
 	$wishlist = WishList::getByToken($token);
 	if ($wishlist !== false)
-		WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product, $id_product_attribute, $this->context->cart->id, 1);
+		WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product, $id_product_attribute, $context->cart->id, 1);
 }
 else
 	$error = $module->l('You must log in', 'buywishlistproduct');
