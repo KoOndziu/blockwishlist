@@ -44,22 +44,21 @@ if ($context->customer->isLogged()) {
     if (empty($id_wishlist) === false) {
         if (!strcmp($action, 'update')) {
             WishList::updateProduct($id_wishlist, $id_product,
-                $id_product_attribute, $priority, $quantity);
+            $id_product_attribute, $priority, $quantity);
         } else {
             if (!strcmp($action, 'delete')) {
                 WishList::removeProduct($id_wishlist,
-                    (int) $context->customer->id, $id_product,
-                    $id_product_attribute);
+                (int) $context->customer->id, $id_product, $id_product_attribute);
             }
 
             $products = WishList::getProductByIdCustomer($id_wishlist,
-                    $context->customer->id, $context->language->id);
+            $context->customer->id, $context->language->id);
             $bought   = WishList::getBoughtProduct($id_wishlist);
             $link     = new Link();
 
             for ($i = 0; $i < sizeof($products); ++$i) {
                 $obj = new Product((int) ($products[$i]['id_product']), false,
-                    $context->language->id);
+                $context->language->id);
                 if (!Validate::isLoadedObject($obj)) {
                     continue;
                 } else {
@@ -69,12 +68,12 @@ if ($context->customer->isLogged()) {
 
                             $coverImg                   = $obj->id.'-'.$combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
                             $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'],
-                                $coverImg, ImageType::getFormattedName('home'));
+                            $coverImg, ImageType::getFormattedName('home'));
                         } else {
                             $cover                      = Product::getCover($obj->id);
                             $coverImg                   = $obj->id.'-'.$cover['id_image'];
                             $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'],
-                                $coverImg, ImageType::getFormattedName('home'));
+                            $coverImg, ImageType::getFormattedName('home'));
                         }
                     } else {
                         $images = $obj->getImages($context->language->id);
@@ -82,8 +81,7 @@ if ($context->customer->isLogged()) {
                             if ($image['cover']) {
                                 $coverImg                   = $obj->id.'-'.$image['id_image'];
                                 $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'],
-                                    $coverImg,
-                                    ImageType::getFormattedName('home'));
+                                $coverImg, ImageType::getFormattedName('home'));
 
                                 break;
                             }
@@ -96,7 +94,7 @@ if ($context->customer->isLogged()) {
                 $products[$i]['bought'] = false;
                 for ($j = 0, $k = 0; $j < sizeof($bought); ++$j) {
                     if ($bought[$j]['id_product'] == $products[$i]['id_product'] and
-                        $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']) {
+                    $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']) {
                         $products[$i]['bought'][$k++] = $bought[$j];
                     }
                 }
@@ -110,12 +108,12 @@ if ($context->customer->isLogged()) {
                 }
             }
             $context->smarty->assign(array(
-                'products' => $products,
-                'productsBoughts' => $productBoughts,
-                'id_wishlist' => $id_wishlist,
-                'refresh' => $refresh,
-                'token_wish' => $wishlist->token,
-                'wishlists' => WishList::getByIdCustomer($context->cookie->id_customer)
+            'products' => $products,
+            'productsBoughts' => $productBoughts,
+            'id_wishlist' => $id_wishlist,
+            'refresh' => $refresh,
+            'token_wish' => $wishlist->token,
+            'wishlists' => WishList::getByIdCustomer($context->cookie->id_customer)
             ));
 
             // Instance of module class for translations

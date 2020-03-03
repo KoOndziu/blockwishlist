@@ -35,8 +35,8 @@ $context = Context::getContext();
 $module = new BlockWishList();
 
 if (Configuration::get('PS_TOKEN_ENABLE') == 1 and
-    strcmp(Tools::getToken(false), Tools::getValue('token')) and
-    $context->customer->isLogged() === true
+strcmp(Tools::getToken(false), Tools::getValue('token')) and
+$context->customer->isLogged() === true
 ) {
     exit($module->l('invalid token', 'sendwishlist'));
 }
@@ -59,18 +59,18 @@ if ($context->customer->isLogged()) {
         $customer = $context->customer;
         if (Validate::isLoadedObject($customer)) {
             Mail::Send(
-                $context->language->id, 'wishlist',
-                sprintf(Mail::l('Message from %1$s %2$s', $context->language->id),
-                    $customer->lastname, $customer->firstname),
-                array(
-                    '{lastname}' => $customer->lastname,
-                    '{firstname}' => $customer->firstname,
-                    '{wishlist}' => $wishlist['name'],
-                    '{message}' => $context->link->getModuleLink('blockwishlist',
-                        'view', array('token' => $wishlist['token']))
-                ), $to, $toName, $customer->email,
-                $customer->firstname.' '.$customer->lastname, null, null,
-                dirname(__FILE__).'/mails/'
+            $context->language->id, 'wishlist',
+            sprintf(Mail::l('Message from %1$s %2$s', $context->language->id),
+            $customer->lastname, $customer->firstname),
+            array(
+            '{lastname}' => $customer->lastname,
+            '{firstname}' => $customer->firstname,
+            '{wishlist}' => $wishlist['name'],
+            '{message}' => $context->link->getModuleLink('blockwishlist',
+            'view', array('token' => $wishlist['token']))
+            ), $to, $toName, $customer->email,
+            $customer->firstname.' '.$customer->lastname, null, null,
+            dirname(__FILE__).'/mails/'
             );
         }
     }
