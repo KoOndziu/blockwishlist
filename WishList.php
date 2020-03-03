@@ -80,8 +80,7 @@ class WishList extends ObjectModel
   {
     Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'wishlist_email` WHERE `id_wishlist` = ' . (int) ($this->id));
     Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'wishlist_product` WHERE `id_wishlist` = ' . (int) ($this->id));
-    if ($this->default)
-    {
+    if ($this->default) {
       $result = Db::getInstance()->executeS('SELECT * FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $this->id_customer . ' AND `id_wishlist` != ' . (int) $this->id . ' LIMIT 1');
       foreach ($result as $res)
         Db::getInstance()->update('wishlist', array('default' => '1'), 'id_wishlist = ' . (int) $res['id_wishlist']);
@@ -151,8 +150,7 @@ class WishList extends ObjectModel
 		WHERE `id_wishlist` = ' . (int) ($id_wishlist) . '
 		AND `id_customer` = ' . (int) ($id_customer) . '
 		AND `id_shop` = ' . (int) Context::getContext()->shop->id);
-    if (empty($result) === false AND $result != false AND sizeof($result))
-    {
+    if (empty($result) === false AND $result != false AND sizeof($result)) {
       if ($return === false)
         return (true);
       else
@@ -169,8 +167,7 @@ class WishList extends ObjectModel
   public static function getCustomers()
   {
     $cache_id = 'WhishList::getCustomers';
-    if (!Cache::isStored($cache_id))
-    {
+    if (!Cache::isStored($cache_id)) {
       $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
 				SELECT c.`id_customer`, c.`firstname`, c.`lastname`
 				  FROM `' . _DB_PREFIX_ . 'wishlist` w
@@ -215,8 +212,7 @@ class WishList extends ObjectModel
       $shop_restriction = '';
 
     $cache_id = 'WhishList::getByIdCustomer_' . (int) $id_customer . '-' . (int) Shop::getContextShopID() . '-' . (int) Shop::getContextShopGroupID();
-    if (!Cache::isStored($cache_id))
-    {
+    if (!Cache::isStored($cache_id)) {
       $result = Db::getInstance()->executeS('
 			SELECT w.`id_wishlist`, w.`name`, w.`token`, w.`date_add`, w.`date_upd`, w.`counter`, w.`default`
 			FROM `' . _DB_PREFIX_ . 'wishlist` w
@@ -266,8 +262,7 @@ class WishList extends ObjectModel
 
     if (isset($res) AND $res != false)
       foreach ($res AS $refresh)
-        if ($refresh['wish_quantity'] > $refresh['cart_quantity'])
-        {
+        if ($refresh['wish_quantity'] > $refresh['cart_quantity']) {
           Db::getInstance()->execute('
 						UPDATE `' . _DB_PREFIX_ . 'wishlist_product`
 						SET `quantity`= `quantity` + ' . ((int) ($refresh['wish_quantity']) - (int) ($refresh['cart_quantity'])) . '
@@ -327,8 +322,7 @@ class WishList extends ObjectModel
     for ($i = 0; $i < sizeof($products); ++$i)
     {
       if (isset($products[$i]['id_product_attribute']) AND
-              Validate::isUnsignedInt($products[$i]['id_product_attribute']))
-      {
+              Validate::isUnsignedInt($products[$i]['id_product_attribute'])) {
         $result = Db::getInstance()->executeS('
 				SELECT al.`name` AS attribute_name, pa.`quantity` AS "attribute_quantity"
 				FROM `' . _DB_PREFIX_ . 'product_attribute_combination` pac
@@ -403,8 +397,7 @@ class WishList extends ObjectModel
 		AND w.`id_customer` = ' . (int) ($id_customer) . '
 		AND wp.`id_product` = ' . (int) ($id_product) . '
 		AND wp.`id_product_attribute` = ' . (int) ($id_product_attribute));
-    if (empty($result) === false AND sizeof($result))
-    {
+    if (empty($result) === false AND sizeof($result)) {
       if (($result['quantity'] + $quantity) <= 0)
         return (WishList::removeProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute));
       else

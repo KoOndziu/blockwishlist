@@ -41,8 +41,7 @@ if (Configuration::get('PS_TOKEN_ENABLE') == 1 AND
 )
   exit($module->l('invalid token', 'sendwishlist'));
 
-if ($context->customer->isLogged())
-{
+if ($context->customer->isLogged()) {
   $id_wishlist = (int) Tools::getValue('id_wishlist');
   if (empty($id_wishlist) === true)
     exit($module->l('Invalid wishlist', 'sendwishlist'));

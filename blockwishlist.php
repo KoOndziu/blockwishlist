@@ -34,8 +34,7 @@ class BlockWishList extends Module
 
   public function install($delete_params = true)
   {
-    if ($delete_params)
-    {
+    if ($delete_params) {
       if (!file_exists(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE))
         return (false);
       else if (!$sql = Tools::file_get_contents(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE))
@@ -99,8 +98,7 @@ class BlockWishList extends Module
 
     if (Tools::isSubmit('viewblockwishlist') && $id = Tools::getValue('id_product'))
       Tools::redirect($this->context->link->getProductLink($id));
-    elseif (Tools::isSubmit('submitSettings'))
-    {
+    elseif (Tools::isSubmit('submitSettings')) {
       $activated = Tools::getValue('activated');
       if ($activated != 0 && $activated != 1)
         $this->html .= '<div class="alert error alert-danger">' . $this->l('Activate module : Invalid choice.') . '</div>';
@@ -126,16 +124,13 @@ class BlockWishList extends Module
 
   public function hookTop($params)
   {
-    if ($this->context->customer->isLogged())
-    {
+    if ($this->context->customer->isLogged()) {
       $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
       if (empty($this->context->cookie->id_wishlist) === true ||
-              WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false)
-      {
+              WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
         if (!count($wishlists))
           $id_wishlist = false;
-        else
-        {
+        else {
           $id_wishlist = (int) $wishlists[0]['id_wishlist'];
           $this->context->cookie->id_wishlist = (int) $id_wishlist;
         }
@@ -174,16 +169,13 @@ class BlockWishList extends Module
 
   public function hookRightColumn($params)
   {
-    if ($this->context->customer->isLogged())
-    {
+    if ($this->context->customer->isLogged()) {
       $wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
       if (empty($this->context->cookie->id_wishlist) === true ||
-              WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false)
-      {
+              WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false) {
         if (!count($wishlists))
           $id_wishlist = false;
-        else
-        {
+        else {
           $id_wishlist = (int) $wishlists[0]['id_wishlist'];
           $this->context->cookie->id_wishlist = (int) $id_wishlist;
         }
@@ -244,13 +236,11 @@ class BlockWishList extends Module
       $obj = new Product((int) $products[$i]['id_product'], false, $this->context->language->id);
       if (!Validate::isLoadedObject($obj))
         continue;
-      else
-      {
+      else {
         $images = $obj->getImages($this->context->language->id);
         foreach ($images as $image)
         {
-          if ($image['cover'])
-          {
+          if ($image['cover']) {
             $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
             break;
           }
@@ -300,8 +290,7 @@ class BlockWishList extends Module
     $wishlists = WishList::getByIdCustomer((int) $customer->id);
     if (!count($wishlists))
       $this->html .= $customer->lastname . ' ' . $customer->firstname . ' ' . $this->l('No wishlist.');
-    else
-    {
+    else {
       $this->html .= '<form action="' . Tools::safeOutput($_SERVER['REQUEST_URI']) . '" method="post" id="listing">';
 
       $id_wishlist = (int) Tools::getValue('id_wishlist');
@@ -314,8 +303,7 @@ class BlockWishList extends Module
         foreach ($wishlists as $wishlist)
         {
           $this->html .= '<option value="' . (int) $wishlist['id_wishlist'] . '"';
-          if ($wishlist['id_wishlist'] == $id_wishlist)
-          {
+          if ($wishlist['id_wishlist'] == $id_wishlist) {
             $this->html .= ' selected="selected"';
           }
           $this->html .= '>' . htmlentities($wishlist['name'], ENT_COMPAT, 'UTF-8') . '</option>';
@@ -377,8 +365,7 @@ class BlockWishList extends Module
         ),
     );
 
-    if ($id_customer = Tools::getValue('id_customer'))
-    {
+    if ($id_customer = Tools::getValue('id_customer')) {
       $wishlists = WishList::getByIdCustomer($id_customer);
       $fields_form['form']['input'][] = array(
           'type' => 'select',

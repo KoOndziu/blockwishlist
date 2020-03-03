@@ -33,8 +33,7 @@ require_once(dirname(__FILE__) . '/../../init.php');
 require_once(dirname(__FILE__) . '/WishList.php');
 require_once(dirname(__FILE__) . '/blockwishlist.php');
 $context = Context::getContext();
-if ($context->customer->isLogged())
-{
+if ($context->customer->isLogged()) {
   $action = Tools::getValue('action');
   $id_wishlist = (int) Tools::getValue('id_wishlist');
   $id_product = (int) Tools::getValue('id_product');
@@ -43,13 +42,10 @@ if ($context->customer->isLogged())
   $priority = Tools::getValue('priority');
   $wishlist = new WishList((int) ($id_wishlist));
   $refresh = ((Tools::getValue('refresh') == 'true') ? 1 : 0);
-  if (empty($id_wishlist) === false)
-  {
-    if (!strcmp($action, 'update'))
-    {
+  if (empty($id_wishlist) === false) {
+    if (!strcmp($action, 'update')) {
       WishList::updateProduct($id_wishlist, $id_product, $id_product_attribute, $priority, $quantity);
-    } else
-    {
+    } else {
       if (!strcmp($action, 'delete'))
         WishList::removeProduct($id_wishlist, (int) $context->customer->id, $id_product, $id_product_attribute);
 
@@ -62,28 +58,22 @@ if ($context->customer->isLogged())
         $obj = new Product((int) ($products[$i]['id_product']), false, $context->language->id);
         if (!Validate::isLoadedObject($obj))
           continue;
-        else
-        {
-          if ($products[$i]['id_product_attribute'] != 0)
-          {
+        else {
+          if ($products[$i]['id_product_attribute'] != 0) {
             $combination_imgs = $obj->getCombinationImages($context->language->id);
-            if (isset($combination_imgs[$products[$i]['id_product_attribute']][0]))
-            {
+            if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
 
               $coverImg = $obj->id . '-' . $combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
               $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
-            } else
-            {
+            } else {
               $cover = Product::getCover($obj->id);
               $coverImg = $obj->id . '-' . $cover['id_image'];
               $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
             }
-          } else
-          {
+          } else {
             $images = $obj->getImages($context->language->id);
             foreach ($images AS $k => $image)
-              if ($image['cover'])
-              {
+              if ($image['cover']) {
                 $coverImg = $obj->id . '-' . $image['id_image'];
                 $products[$i]['image_link'] = $link->getImageLink($products[$i]['link_rewrite'], $coverImg, ImageType::getFormattedName('home'));
 

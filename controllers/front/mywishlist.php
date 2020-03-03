@@ -35,8 +35,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
   {
     $errors = array();
 
-    if ($this->context->customer->isLogged())
-    {
+    if ($this->context->customer->isLogged()) {
       $add = Tools::getIsset('add');
       $add = (empty($add) === false ? 1 : 0);
       $delete = Tools::getIsset('deleted');
@@ -44,20 +43,17 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
       $default = Tools::getIsset('default');
       $default = (empty($default) === false ? 1 : 0);
       $id_wishlist = Tools::getValue('id_wishlist');
-      if (Tools::isSubmit('submitWishlist'))
-      {
+      if (Tools::isSubmit('submitWishlist')) {
         if (Configuration::get('PS_TOKEN_ACTIVATED') == 1 && strcmp(Tools::getToken(), Tools::getValue('token')))
           $errors[] = $this->module->l('Invalid token', 'mywishlist');
-        if (!count($errors))
-        {
+        if (!count($errors)) {
           $name = Tools::getValue('name');
           if (empty($name))
             $errors[] = $this->module->l('You must specify a name.', 'mywishlist');
           if (WishList::isExistsByNameForUser($name))
             $errors[] = $this->module->l('This name is already used by another list.', 'mywishlist');
 
-          if (!count($errors))
-          {
+          if (!count($errors)) {
             $wishlist = new WishList();
             $wishlist->id_shop = $this->context->shop->id;
             $wishlist->id_shop_group = $this->context->shop->id_shop_group;
@@ -89,15 +85,13 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
         }
       } else if ($add)
         WishList::addCardToWishlist($this->context->customer->id, Tools::getValue('id_wishlist'), $this->context->language->id);
-      elseif ($delete && empty($id_wishlist) === false)
-      {
+      elseif ($delete && empty($id_wishlist) === false) {
         $wishlist = new WishList((int) $id_wishlist);
         if ($this->context->customer->isLogged() && $this->context->customer->id == $wishlist->id_customer && Validate::isLoadedObject($wishlist))
           $wishlist->delete();
         else
           $errors[] = $this->module->l('Cannot delete this wishlist', 'mywishlist');
-      } elseif ($default)
-      {
+      } elseif ($default) {
         $wishlist = new WishList((int) $id_wishlist);
         if ($this->context->customer->isLogged() && $this->context->customer->id == $wishlist->id_customer && Validate::isLoadedObject($wishlist))
           $wishlist->setDefault();
@@ -129,8 +123,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     $id_wishlist = Tools::getValue('id_wishlist');
 
     $wishlist = new WishList((int) $id_wishlist);
-    if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id)
-    {
+    if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id) {
       $default_change = $wishlist->default ? true : false;
       $id_customer = $wishlist->id_customer;
       $wishlist->delete();
@@ -138,8 +131,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
       die(Tools::jsonEncode(array('success' => false,
                   'error' => $this->module->l('Cannot delete this wishlist', 'mywishlist'))));
 
-    if ($default_change)
-    {
+    if ($default_change) {
       $array = WishList::getDefault($id_customer);
 
       if (count($array))
@@ -162,8 +154,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     $default = (empty($default) === false ? 1 : 0);
     $id_wishlist = Tools::getValue('id_wishlist');
 
-    if ($default)
-    {
+    if ($default) {
       $wishlist = new WishList((int) $id_wishlist);
       if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id && $wishlist->setDefault())
         die(Tools::jsonEncode(array('success' => true)));
@@ -198,12 +189,10 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     $check = (int) Db::getInstance()->getValue('SELECT quantity FROM ' . _DB_PREFIX_ . 'wishlist_product
 			WHERE `id_product` = ' . $id_product . ' AND `id_product_attribute` = ' . $id_product_attribute . ' AND `id_wishlist` = ' . $id_new_wishlist);
 
-    if ($check)
-    {
+    if ($check) {
       $res &= $old_wishlist->removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
       $res &= $new_wishlist->updateProduct($id_new_wishlist, $id_product, $id_product_attribute, $priority, $quantity + $check);
-    } else
-    {
+    } else {
       $res &= $old_wishlist->removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
       $res &= $new_wishlist->addProduct($id_new_wishlist, $this->context->customer->id, $id_product, $id_product_attribute, $quantity);
     }

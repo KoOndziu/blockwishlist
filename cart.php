@@ -23,8 +23,7 @@ if (Configuration::get('PS_TOKEN_ENABLE') == 1 &&
         $context->customer->isLogged() === true
 )
   echo $module->l('Invalid token', 'cart');
-if ($context->customer->isLogged())
-{
+if ($context->customer->isLogged()) {
   if ($id_wishlist && WishList::exists($id_wishlist, $context->customer->id) === true)
     $context->cookie->id_wishlist = (int) $id_wishlist;
 
@@ -33,10 +32,8 @@ if ($context->customer->isLogged())
 
   if (empty($context->cookie->id_wishlist) === true || $context->cookie->id_wishlist == false)
     $context->smarty->assign('error', true);
-  if (($add || $delete) && empty($id_product) === false)
-  {
-    if (!isset($context->cookie->id_wishlist) || $context->cookie->id_wishlist == '')
-    {
+  if (($add || $delete) && empty($id_product) === false) {
+    if (!isset($context->cookie->id_wishlist) || $context->cookie->id_wishlist == '') {
       $wishlist = new WishList();
       $wishlist->id_shop = $context->shop->id;
       $wishlist->id_shop_group = $context->shop->id_shop_group;

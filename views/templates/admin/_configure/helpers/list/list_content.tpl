@@ -26,11 +26,11 @@
 {extends file="helpers/list/list_content.tpl"}
 
 {block name="td_content"}
-	{if isset($params.type) && $params.type == 'priority'}
-		<span class="label label-default">{$priority[$tr.$key]}</span>
-	{elseif isset($params.type) && $params.type == 'image'}
-		<img src="{$tr.$key}"/>
-	{else}
-		{$smarty.block.parent}
-	{/if}
+  {if isset($params.type) && $params.type == 'priority'}
+    <span class="label label-default">{$priority[$tr.$key]}</span>
+  {elseif isset($params.type) && $params.type == 'image'}
+    <img src="{$tr.$key}"/>
+  {else}
+    {$smarty.block.parent}
+  {/if}
 {/block}

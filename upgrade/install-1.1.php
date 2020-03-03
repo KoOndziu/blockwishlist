@@ -9,8 +9,7 @@ function upgrade_module_1_1($object)
   $object->registerHook('top');
   $list_fields = Db::getInstance()->executeS('SHOW FIELDS FROM `' . _DB_PREFIX_ . 'wishlist`');
 
-  if (is_array($list_fields))
-  {
+  if (is_array($list_fields)) {
     foreach ($list_fields as $k => $field)
       $list_fields[$k] = $field['Field'];
     if (!in_array('id_shop_group', $list_fields))

@@ -18,8 +18,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 
     $module = new BlockWishList();
 
-    if ($token)
-    {
+    if ($token) {
       $wishlist = WishList::getByToken($token);
 
       WishList::refreshWishList($wishlist['id_wishlist']);
@@ -33,29 +32,24 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
         $obj = new Product((int) $products[$i]['id_product'], true, $this->context->language->id);
         if (!Validate::isLoadedObject($obj))
           continue;
-        else
-        {
+        else {
           $products[$i]['priority_name'] = $priority_names[$products[$i]['priority']];
           $quantity = Product::getQuantity((int) $products[$i]['id_product'], $products[$i]['id_product_attribute']);
           $products[$i]['attribute_quantity'] = $quantity;
           $products[$i]['product_quantity'] = $quantity;
           $products[$i]['allow_oosp'] = $obj->isAvailableWhenOutOfStock((int) $obj->out_of_stock);
-          if ($products[$i]['id_product_attribute'] != 0)
-          {
+          if ($products[$i]['id_product_attribute'] != 0) {
             $combination_imgs = $obj->getCombinationImages($this->context->language->id);
             if (isset($combination_imgs[$products[$i]['id_product_attribute']][0]))
               $products[$i]['cover'] = $obj->id . '-' . $combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
-            else
-            {
+            else {
               $cover = Product::getCover($obj->id);
               $products[$i]['cover'] = $obj->id . '-' . $cover['id_image'];
             }
-          } else
-          {
+          } else {
             $images = $obj->getImages($this->context->language->id);
             foreach ($images as $image)
-              if ($image['cover'])
-              {
+              if ($image['cover']) {
                 $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
                 break;
               }
@@ -81,8 +75,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 
       foreach ($wishlists as $key => $item)
       {
-        if ($item['id_wishlist'] == $wishlist['id_wishlist'])
-        {
+        if ($item['id_wishlist'] == $wishlist['id_wishlist']) {
           unset($wishlists[$key]);
           break;
         }
