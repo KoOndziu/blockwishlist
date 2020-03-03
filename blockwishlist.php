@@ -38,7 +38,7 @@ class BlockWishList extends Module
         if ($delete_params) {
             if (!file_exists(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE)) {
                 return (false);
-            } else if (!$sql = Tools::file_get_contents(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE)) {
+            } elseif (!$sql = Tools::file_get_contents(dirname(__FILE__) . '/' . self::INSTALL_SQL_FILE)) {
                 return (false);
             }
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
