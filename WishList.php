@@ -21,31 +21,22 @@ class WishList extends ObjectModel
 {
     /** @var integer Wishlist ID */
     public $id;
-
     /** @var integer Customer ID */
     public $id_customer;
-
     /** @var integer Token */
     public $token;
-
     /** @var integer Name */
     public $name;
-
     /** @var string Object creation date */
     public $date_add;
-
     /** @var string Object last modification date */
     public $date_upd;
-
     /** @var string Object last modification date */
     public $id_shop;
-
     /** @var string Object last modification date */
     public $id_shop_group;
-
     /** @var integer default */
     public $default;
-
     /**
      * @see ObjectModel::$definition
      */
