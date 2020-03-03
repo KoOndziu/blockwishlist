@@ -64,7 +64,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
                 /*
                   for ($j = 0, $k = 0; $j < sizeof($bought); ++$j)
                   {
-                  if ($bought[$j]['id_product'] == $products[$i]['id_product'] AND
+                  if ($bought[$j]['id_product'] == $products[$i]['id_product'] and
                   $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']
                   )
                   $products[$i]['bought'][$k++] = $bought[$j];

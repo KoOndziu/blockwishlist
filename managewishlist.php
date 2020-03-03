@@ -73,7 +73,7 @@ if ($context->customer->isLogged()) {
                         }
                     } else {
                         $images = $obj->getImages($context->language->id);
-                        foreach ($images AS $k => $image)
+                        foreach ($images as $k => $image)
                         {
                             if ($image['cover']) {
                                 $coverImg = $obj->id . '-' . $image['id_image'];
@@ -90,7 +90,7 @@ if ($context->customer->isLogged()) {
                 $products[$i]['bought'] = false;
                 for ($j = 0, $k = 0; $j < sizeof($bought); ++$j)
                 {
-                    if ($bought[$j]['id_product'] == $products[$i]['id_product'] AND
+                    if ($bought[$j]['id_product'] == $products[$i]['id_product'] and
                             $bought[$j]['id_product_attribute'] == $products[$i]['id_product_attribute']) {
                         $products[$i]['bought'][$k++] = $bought[$j];
                     }

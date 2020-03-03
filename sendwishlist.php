@@ -35,8 +35,8 @@ $context = Context::getContext();
 // Instance of module class for translations
 $module = new BlockWishList();
 
-if (Configuration::get('PS_TOKEN_ENABLE') == 1 AND
-        strcmp(Tools::getToken(false), Tools::getValue('token')) AND
+if (Configuration::get('PS_TOKEN_ENABLE') == 1 and
+        strcmp(Tools::getToken(false), Tools::getValue('token')) and
         $context->customer->isLogged() === true
 ) {
     exit($module->l('invalid token', 'sendwishlist'));

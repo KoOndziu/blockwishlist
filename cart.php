@@ -54,7 +54,7 @@ if ($context->customer->isLogged()) {
         }
         if ($add && $quantity) {
             WishList::addProduct($context->cookie->id_wishlist, $context->customer->id, $id_product, $id_product_attribute, $quantity);
-        } else if ($delete) {
+        } elseif ($delete) {
             WishList::removeProduct($context->cookie->id_wishlist, $context->customer->id, $id_product, $id_product_attribute);
         }
     }

@@ -148,7 +148,7 @@ class WishList extends ObjectModel
      */
     public static function exists($id_wishlist, $id_customer, $return = false)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR
+        if (!Validate::isUnsignedId($id_wishlist) or
                 !Validate::isUnsignedId($id_customer)) {
             die(Tools::displayError());
         }
@@ -158,7 +158,7 @@ class WishList extends ObjectModel
 		WHERE `id_wishlist` = ' . (int) ($id_wishlist) . '
 		AND `id_customer` = ' . (int) ($id_customer) . '
 		AND `id_shop` = ' . (int) Context::getContext()->shop->id);
-        if (empty($result) === false AND $result != false AND sizeof($result)) {
+        if (empty($result) === false and $result != false and sizeof($result)) {
             if ($return === false) {
                 return (true);
             } else {
@@ -248,8 +248,8 @@ class WishList extends ObjectModel
 		WHERE (wp.id_wishlist=' . (int) ($id_wishlist) . ' AND o.id_cart IS NULL)
 		HAVING timecart  >= 3600*6');
 
-        if (isset($old_carts) AND $old_carts != false) {
-            foreach ($old_carts AS $old_cart)
+        if (isset($old_carts) and $old_carts != false) {
+            foreach ($old_carts as $old_cart)
             {
                 Db::getInstance()->execute('
 					DELETE FROM `' . _DB_PREFIX_ . 'cart_product`
@@ -275,8 +275,8 @@ class WishList extends ObjectModel
 			WHERE wp.id_wishlist=' . (int) ($id_wishlist)
         );
 
-        if (isset($res) AND $res != false) {
-            foreach ($res AS $refresh)
+        if (isset($res) and $res != false) {
+            foreach ($res as $refresh)
             {
                 if ($refresh['wish_quantity'] > $refresh['cart_quantity']) {
                     Db::getInstance()->execute('
@@ -292,8 +292,8 @@ class WishList extends ObjectModel
                 }
             }
         }
-        if (isset($freshwish) AND $freshwish != false) {
-            foreach ($freshwish AS $prodcustomer)
+        if (isset($freshwish) and $freshwish != false) {
+            foreach ($freshwish as $prodcustomer)
             {
                 Db::getInstance()->execute('
 					UPDATE `' . _DB_PREFIX_ . 'wishlist_product` SET `quantity`=`quantity` +
@@ -318,8 +318,8 @@ class WishList extends ObjectModel
      */
     public static function getProductByIdCustomer($id_wishlist, $id_customer, $id_lang, $id_product = null, $quantity = false)
     {
-        if (!Validate::isUnsignedId($id_customer) OR
-                !Validate::isUnsignedId($id_lang) OR
+        if (!Validate::isUnsignedId($id_customer) or
+                !Validate::isUnsignedId($id_lang) or
                 !Validate::isUnsignedId($id_wishlist)) {
             die(Tools::displayError());
         }
@@ -337,7 +337,7 @@ class WishList extends ObjectModel
                 (empty($id_product) === false ? ' AND wp.`id_product` = ' . (int) ($id_product) : '') .
                 ($quantity == true ? ' AND wp.`quantity` != 0' : '') . '
 		GROUP BY p.id_product, wp.id_product_attribute');
-        if (empty($products) === true OR!sizeof($products)) {
+        if (empty($products) === true or!sizeof($products)) {
             return array();
         }
         for ($i = 0; $i < sizeof($products); ++$i)
@@ -356,7 +356,7 @@ class WishList extends ObjectModel
 				WHERE pac.`id_product_attribute` = ' . (int) ($products[$i]['id_product_attribute']));
                 $products[$i]['attributes_small'] = '';
                 if ($result) {
-                    foreach ($result AS $row)
+                    foreach ($result as $row)
                     {
                         $products[$i]['attributes_small'] .= $row['attribute_name'] . ', ';
                     }
@@ -412,9 +412,9 @@ class WishList extends ObjectModel
      */
     public static function addProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute, $quantity)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR
-                !Validate::isUnsignedId($id_customer) OR
-                !Validate::isUnsignedId($id_product) OR
+        if (!Validate::isUnsignedId($id_wishlist) or
+                !Validate::isUnsignedId($id_customer) or
+                !Validate::isUnsignedId($id_product) or
                 !Validate::isUnsignedId($quantity)) {
             die(Tools::displayError());
         }
@@ -426,7 +426,7 @@ class WishList extends ObjectModel
 		AND w.`id_customer` = ' . (int) ($id_customer) . '
 		AND wp.`id_product` = ' . (int) ($id_product) . '
 		AND wp.`id_product_attribute` = ' . (int) ($id_product_attribute));
-        if (empty($result) === false AND sizeof($result)) {
+        if (empty($result) === false and sizeof($result)) {
             if (($result['quantity'] + $quantity) <= 0) {
                 return (WishList::removeProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute));
             } else {
@@ -454,10 +454,10 @@ class WishList extends ObjectModel
      */
     public static function updateProduct($id_wishlist, $id_product, $id_product_attribute, $priority, $quantity)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR
-                !Validate::isUnsignedId($id_product) OR
-                !Validate::isUnsignedId($quantity) OR
-                $priority < 0 OR $priority > 2) {
+        if (!Validate::isUnsignedId($id_wishlist) or
+                !Validate::isUnsignedId($id_product) or
+                !Validate::isUnsignedId($quantity) or
+                $priority < 0 or $priority > 2) {
             die(Tools::displayError());
         }
         return (Db::getInstance()->execute('
@@ -476,8 +476,8 @@ class WishList extends ObjectModel
      */
     public static function removeProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR
-                !Validate::isUnsignedId($id_customer) OR
+        if (!Validate::isUnsignedId($id_wishlist) or
+                !Validate::isUnsignedId($id_customer) or
                 !Validate::isUnsignedId($id_product)) {
             die(Tools::displayError());
         }
@@ -487,9 +487,9 @@ class WishList extends ObjectModel
 		LEFT JOIN `' . _DB_PREFIX_ . 'wishlist_product` wp ON (wp.`id_wishlist` = w.`id_wishlist`)
 		WHERE `id_customer` = ' . (int) ($id_customer) . '
 		AND w.`id_wishlist` = ' . (int) ($id_wishlist));
-        if (empty($result) === true OR
-                $result === false OR
-                !sizeof($result) OR
+        if (empty($result) === true or
+                $result === false or
+                !sizeof($result) or
                 $result['id_wishlist'] != $id_wishlist) {
             return (false);
         }
@@ -533,8 +533,8 @@ class WishList extends ObjectModel
      */
     public static function addBoughtProduct($id_wishlist, $id_product, $id_product_attribute, $id_cart, $quantity)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR
-                !Validate::isUnsignedId($id_product) OR
+        if (!Validate::isUnsignedId($id_wishlist) or
+                !Validate::isUnsignedId($id_product) or
                 !Validate::isUnsignedId($quantity)) {
             die(Tools::displayError());
         }
@@ -545,8 +545,8 @@ class WishList extends ObjectModel
 			AND `id_product` = ' . (int) ($id_product) . '
 			AND `id_product_attribute` = ' . (int) ($id_product_attribute));
 
-        if (!sizeof($result) OR
-                ($result['quantity'] - $quantity) < 0 OR
+        if (!sizeof($result) or
+                ($result['quantity'] - $quantity) < 0 or
                 $quantity > $result['quantity']) {
             return (false);
         }
@@ -591,7 +591,7 @@ class WishList extends ObjectModel
      */
     public static function addEmail($id_wishlist, $email)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR empty($email) OR!Validate::isEmail($email)) {
+        if (!Validate::isUnsignedId($id_wishlist) or empty($email) or!Validate::isEmail($email)) {
             return false;
         }
         return (Db::getInstance()->execute('
@@ -608,7 +608,7 @@ class WishList extends ObjectModel
      */
     public static function getEmail($id_wishlist, $id_customer)
     {
-        if (!Validate::isUnsignedId($id_wishlist) OR
+        if (!Validate::isUnsignedId($id_wishlist) or
                 !Validate::isUnsignedId($id_customer)) {
             die(Tools::displayError());
         }
