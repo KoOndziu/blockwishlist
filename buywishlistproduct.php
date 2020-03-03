@@ -46,7 +46,7 @@ if (!Tools::strlen($error) &&
 {
 	$wishlist = WishList::getByToken($token);
 	if ($wishlist !== false)
-		WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product, $id_product_attribute, $cart->id, 1);
+		WishList::addBoughtProduct($wishlist['id_wishlist'], $id_product, $id_product_attribute, $this->context->cart->id, 1);
 }
 else
 	$error = $module->l('You must log in', 'buywishlistproduct');
