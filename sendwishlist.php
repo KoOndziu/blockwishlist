@@ -73,7 +73,7 @@ if ($context->customer->isLogged()) {
                 $to,
                 $toName,
                 $customer->email,
-                $customer->firstname.' '.$customer->lastname, 
+                $customer->firstname.' '.$customer->lastname,
                 null,
                 null,
                 dirname(__FILE__).'/mails/'

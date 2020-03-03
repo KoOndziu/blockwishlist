@@ -24,11 +24,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
         } elseif (!empty($action) && method_exists($this, 'ajaxProcess'.Tools::toCamelCase($action))) {
             $this->{'ajaxProcess'.Tools::toCamelCase($action)}();
         } else {
-            die(
-                Tools::jsonEncode(
-                    array('error' => 'method doesn\'t exist')
-                )
-            );
+            die(Tools::jsonEncode(['error' => 'method doesn\'t exist']));
         }
     }
 
@@ -74,10 +70,10 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
                         Mail::Send(
                             $this->context->language->id, 'wishlink',
                             Mail::l('Your wishlist\'s link', $this->context->language->id),
-                            array(
+                            [
                                 '{wishlist}' => $wishlist->name,
-                                '{message}'  => $this->context->link->getModuleLink('blockwishlist', 'view', array('token' => $wishlist->token))
-                            ),
+                                '{message}'  => $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist->token])
+                            ],
                             $this->context->customer->email,
                             $this->context->customer->firstname.' '.$this->context->customer->lastname,
                             null,
@@ -90,7 +86,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
                         Tools::redirect($this->context->link->getModuleLink('blockwishlist', 'mywishlist'));
                     }
                 }
-            } else if ($add) {
+            } elseif ($add) {
                 WishList::addCardToWishlist($this->context->customer->id, Tools::getValue('id_wishlist'), $this->context->language->id);
             } elseif ($delete && empty($id_wishlist) === false) {
                 $wishlist = new WishList((int) $id_wishlist);
@@ -126,10 +122,10 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
     {
         if (!$this->context->customer->isLogged()) {
             die(
-                Tools::jsonEncode(array(
+                Tools::jsonEncode([
                     'success' => false,
-                    'error'   => $this->module->l('You aren\'t logged in', 'mywishlist'))
-                )
+                    'error'   => $this->module->l('You aren\'t logged in', 'mywishlist')
+                ])
             );
         }
 
@@ -144,10 +140,10 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
             $wishlist->delete();
         } else {
             die(
-                Tools::jsonEncode(array(
+                Tools::jsonEncode([
                     'success' => false,
-                    'error'   => $this->module->l('Cannot delete this wishlist', 'mywishlist'))
-                )
+                    'error'   => $this->module->l('Cannot delete this wishlist', 'mywishlist')
+                ])
             );
         }
 
@@ -156,25 +152,25 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
             if (count($array)) {
                 die(
-                    Tools::jsonEncode(array(
+                    Tools::jsonEncode([
                         'success'    => true,
-                        'id_default' => $array[0]['id_wishlist'])
-                    )
+                        'id_default' => $array[0]['id_wishlist']
+                    ])
                 );
             }
         }
 
-        die(Tools::jsonEncode(array('success' => true)));
+        die(Tools::jsonEncode(['success' => true]));
     }
 
     public function ajaxProcessSetDefault()
     {
         if (!$this->context->customer->isLogged()) {
             die(
-                Tools::jsonEncode(array(
+                Tools::jsonEncode([
                     'success' => false,
-                    'error'   => $this->module->l('You aren\'t logged in', 'mywishlist'))
-                )
+                    'error'   => $this->module->l('You aren\'t logged in', 'mywishlist')
+                ])
             );
         }
 
@@ -185,21 +181,21 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
         if ($default) {
             $wishlist = new WishList((int) $id_wishlist);
             if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id && $wishlist->setDefault()) {
-                die(Tools::jsonEncode(array('success' => true)));
+                die(Tools::jsonEncode(['success' => true]));
             }
         }
 
-        die(Tools::jsonEncode(array('error' => true)));
+        die(Tools::jsonEncode(['error' => true]));
     }
 
     public function ajaxProcessProductChangeWishlist()
     {
         if (!$this->context->customer->isLogged()) {
             die(
-                Tools::jsonEncode(array(
+                Tools::jsonEncode([
                     'success' => false,
-                    'error'   => $this->module->l('You aren\'t logged in', 'mywishlist'))
-                )
+                    'error'   => $this->module->l('You aren\'t logged in', 'mywishlist')
+                ])
             );
         }
 
@@ -218,20 +214,20 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
             (Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer != $this->context->customer->id) ||
             (Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer != $this->context->customer->id)) {
             die(
-                Tools::jsonEncode(array(
+                Tools::jsonEncode([
                     'success' => false,
-                    'error'   => $this->module->l('Error while moving product to another list', 'mywishlist'))
-                )
+                    'error'   => $this->module->l('Error while moving product to another list', 'mywishlist')
+                ])
             );
         }
 
         $res = true;
-        $check = (int) Db::getInstance()->getValue(
-                'SELECT quantity '
-                .'FROM '._DB_PREFIX_.'wishlist_product '
-                .'WHERE `id_product` = '.$id_product.''
-                .'AND `id_product_attribute` = '.$id_product_attribute.' '
-                .'AND `id_wishlist` = '.$id_new_wishlist
+        $check = (int) Db::getInstance()->getValue('
+            SELECT quantity
+            FROM '._DB_PREFIX_.'wishlist_product
+            WHERE `id_product` = '.$id_product.'
+            AND `id_product_attribute` = '.$id_product_attribute.'
+            AND `id_wishlist` = '.$id_new_wishlist
         );
 
         if ($check) {
@@ -244,21 +240,17 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
         if (!$res) {
             die(
-                Tools::jsonEncode(
-                    array(
-                        'success' => false,
-                        'error'   => $this->module->l('Error while moving product to another list', 'mywishlist')
-                    )
-                )
+                Tools::jsonEncode([
+                    'success' => false,
+                    'error'   => $this->module->l('Error while moving product to another list', 'mywishlist')
+                ])
             );
         }
         die(
-            Tools::jsonEncode(
-                array(
-                    'success' => true,
-                    'msg'     => $this->module->l('The product has been correctly moved', 'mywishlist')
-                )
-            )
+            Tools::jsonEncode([
+                'success' => true,
+                'msg'     => $this->module->l('The product has been correctly moved', 'mywishlist')
+            ])
         );
     }
 }

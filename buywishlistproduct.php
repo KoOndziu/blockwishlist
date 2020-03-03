@@ -63,4 +63,3 @@ if (!Tools::strlen($error) &&
 if (empty($error) === false) {
     echo $error;
 }
-

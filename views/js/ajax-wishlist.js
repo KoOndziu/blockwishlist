@@ -266,7 +266,7 @@ function WishlistProductManage(id, action, id_wishlist, id_product, id_product_a
     {
       if (action == 'delete')
         $('#wlp_' + id_product + '_' + id_product_attribute).fadeOut('fast');
-      else if (action == 'update')
+      elseif (action == 'update')
       {
         $('#wlp_' + id_product + '_' + id_product_attribute).fadeOut('fast');
         $('#wlp_' + id_product + '_' + id_product_attribute).fadeIn('fast');
@@ -703,7 +703,7 @@ function wishlistProductChange(id_product, id_product_attribute, id_old_wishlist
 // 		{
 // 			if (action == 'delete')
 // 				$('#wlp_' + id_product + '_' + id_product_attribute).fadeOut('fast');
-// 			else if (action == 'update')
+// 			elseif (action == 'update')
 // 			{
 // 				$('#wlp_' + id_product + '_' + id_product_attribute).fadeOut('fast');
 // 				$('#wlp_' + id_product + '_' + id_product_attribute).fadeIn('fast');

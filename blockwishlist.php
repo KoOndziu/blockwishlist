@@ -83,8 +83,8 @@ class BlockWishList extends Module
             `'._DB_PREFIX_.'wishlist`,
             `'._DB_PREFIX_.'wishlist_email`,
             `'._DB_PREFIX_.'wishlist_product`,
-            `'._DB_PREFIX_.'wishlist_product_cart`'
-        );
+            `'._DB_PREFIX_.'wishlist_product_cart`
+        ');
     }
 
     public function reset()
