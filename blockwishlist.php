@@ -371,20 +371,22 @@ class BlockWishList extends Module
                     'icon'  => 'icon-cogs'
                 ],
                 'input'  => [
-                    'type'    => 'select',
-                    'label'   => $this->l('Customers :'),
-                    'name'    => 'id_customer',
-                    'options' => [
-                        'default' => [
-                            'value' => 0,
-                            'label' => $this->l('Choose customer')
-                        ],
-                        'query'   => $customers,
-                        'id'      => 'id_customer',
-                        'name'    => 'name'
-                    ],
-                ],
-            ],
+                    [
+                        'type'    => 'select',
+                        'label'   => $this->l('Customers :'),
+                        'name'    => 'id_customer',
+                        'options' => [
+                            'default' => [
+                                'value' => 0,
+                                'label' => $this->l('Choose customer')
+                            ],
+                            'query'   => $customers,
+                            'id'      => 'id_customer',
+                            'name'    => 'name'
+                        ]
+                    ]
+                ]
+            ]
         ];
 
         if ($id_customer = Tools::getValue('id_customer')) {
